@@ -67,16 +67,23 @@ Each of the 7 spectral hues serves a specific functional and diagnostic role:
 
 ---
 
-## ⚡ Live Demo (Zero Setup Required)
+## ⚡ Live Demo & Android App
 
-Open the acoustic transceiver in any browser on your laptop, phone, or tablet:
+### Option 1: Instant Web App (Zero Setup)
+Open the acoustic transceiver in any modern browser on laptop, phone, or tablet:
 
 👉 **[https://nakulkundra.github.io/Project-Vakta/](https://nakulkundra.github.io/Project-Vakta/)**
 
+### Option 2: Native Android Hybrid App (.APK)
+Project Vakta is packaged as a high-performance **Android Hybrid Application**:
+* 📱 **Native Container:** Built with Kotlin and `androidx.webkit.WebViewAssetLoader` serving assets over an internal secure origin (`https://appassets.androidplatform.net/`).
+* 🎙️ **Direct Hardware Permissions:** Pre-configured with Android `RECORD_AUDIO`, `MODIFY_AUDIO_SETTINGS`, `VIBRATE`, and `WAKE_LOCK` for continuous acoustic reception without screen sleep.
+* 📦 **Incremental APK Pipeline:** Every push to this `AndroidAPP` branch triggers an automated GitHub Actions CI/CD workflow that builds and increments the version (`v1.0.1`, `v1.0.2`, etc.) and publishes the APK to [GitHub Releases](https://github.com/nakulkundra/Project-Vakta/releases).
+
 > [!TIP]
 > **Mobile to Laptop Acoustic Transfer:**
-> 1. Open the URL on your **phone**, select **Receiver Only**, and tap **Start Listening**.
-> 2. Open the URL on your **laptop**, select **Transmitter Only**, enter text, and click **Transmit Over Sound**.
+> 1. Open the URL or APK on your **phone**, select **Receiver Only**, and tap **Start Listening**.
+> 2. Open the app on your **laptop**, select **Transmitter Only**, enter text, and click **Transmit Over Sound**.
 > 3. The acoustic wave travels through room air, and your phone decodes and renders the message with validated CRC-8!
 
 ---

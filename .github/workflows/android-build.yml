@@ -1,0 +1,102 @@
+name: Build Android Hybrid APK (Incremental Versioning)
+
+on:
+  push:
+    branches:
+      - AndroidAPP
+      - main
+    paths:
+      - 'android/**'
+      - 'index.html'
+      - 'vakta-core.js'
+      - 'app.js'
+      - '.github/workflows/android-build.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build & Release APK (v1.0.${{ github.run_number }})
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Gradle Cache
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.4'
+
+      - name: Prepare Web Assets for Android Packaging
+        run: |
+          mkdir -p android/app/src/main/assets/assets
+          cp index.html android/app/src/main/assets/
+          cp vakta-core.js android/app/src/main/assets/
+          cp app.js android/app/src/main/assets/
+          cp assets/banner.svg android/app/src/main/assets/assets/
+          ls -la android/app/src/main/assets/
+
+      - name: Make Gradlew Executable
+        run: |
+          chmod +x android/gradlew
+
+      - name: Build Debug APK with Incremental Versioning
+        env:
+          RUN_NUM: ${{ github.run_number }}
+        run: |
+          cd android
+          ./gradlew assembleDebug \
+            -PversionCode=${RUN_NUM} \
+            -PversionName="1.0.${RUN_NUM}" \
+            --stacktrace
+
+      - name: Prepare APK Artifact
+        run: |
+          VERSION_TAG="v1.0.${{ github.run_number }}"
+          APK_PATH="android/app/build/outputs/apk/debug/app-debug.apk"
+          OUTPUT_APK="Project-Vakta-${VERSION_TAG}.apk"
+          
+          cp "$APK_PATH" "$OUTPUT_APK"
+          echo "BUILT_APK=$OUTPUT_APK" >> $GITHUB_ENV
+          echo "VERSION_TAG=$VERSION_TAG" >> $GITHUB_ENV
+
+      - name: Upload APK to Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Project-Vakta-${{ env.VERSION_TAG }}-APK
+          path: ${{ env.BUILT_APK }}
+          retention-days: 30
+
+      - name: Create GitHub Release with APK
+        uses: softprops/action-gh-release@v2
+        if: github.ref == 'refs/heads/AndroidAPP' || github.ref == 'refs/heads/main'
+        with:
+          tag_name: ${{ env.VERSION_TAG }}
+          name: Project Vakta ${{ env.VERSION_TAG }} (Android APK)
+          body: |
+            ### 📱 Project Vakta Android Hybrid App (${{ env.VERSION_TAG }})
+            
+            * **Version Code:** `${{ github.run_number }}`
+            * **Version Name:** `1.0.${{ github.run_number }}`
+            * **Commit:** `${{ github.sha }}`
+            * **Theme:** Liquid Glass & Subtle VIBGYOR Glow Borders
+            * **DSP:** 16-FSK Acoustic Transceiver via Web Audio API
+            
+            #### 📦 Download & Install:
+            Download and install the attached **`Project-Vakta-${{ env.VERSION_TAG }}.apk`** on any Android device (Android 7.0+).
+          files: ${{ env.BUILT_APK }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
