@@ -47,15 +47,13 @@ jobs:
           cp assets/banner.svg android/app/src/main/assets/assets/
           ls -la android/app/src/main/assets/
 
-      - name: Make Gradlew Executable
-        run: |
-          chmod +x android/gradlew
-
       - name: Build Debug APK with Incremental Versioning
         env:
           RUN_NUM: ${{ github.run_number }}
         run: |
           cd android
+          gradle wrapper --gradle-version 8.4
+          chmod +x gradlew
           ./gradlew assembleDebug \
             -PversionCode=${RUN_NUM} \
             -PversionName="1.0.${RUN_NUM}" \
