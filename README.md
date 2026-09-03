@@ -65,11 +65,19 @@ Project Vakta establishes a wireless, non-RF physical communication channel (PHY
 ### 1. 16-Ary Frequency Shift Keying (16-FSK)
 Information is encoded into discrete audio frequencies by dividing each 8-bit byte into two 4-bit nibbles ($M = 2^4 = 16$ distinct symbols):
 
-$$\text{Nibble}_{\text{high}} = \lfloor \text{Byte} \gg 4 \rfloor, \quad \text{Nibble}_{\text{low}} = \text{Byte} \;\&\; 0\text{x0F}$$
+```math
+\text{Nibble}_{\text{high}} = \lfloor \text{Byte} / 16 \rfloor = (\text{Byte} \gg 4)
+```
+
+```math
+\text{Nibble}_{\text{low}} = \text{Byte} \pmod{16} = (\text{Byte} \land \text{0x0F})
+```
 
 Each nibble $k \in \{0, 1, \dots, 15\}$ maps deterministically to a synthesized continuous-phase sub-band center frequency $f_k$:
 
-$$f_k = f_{\text{base}} + k \cdot \Delta f$$
+```math
+f_k = f_{\text{base}} + k \cdot \Delta f
+```
 
 Where:
 * $f_{\text{base}}$ is the base carrier boundary of the active profile.
@@ -78,11 +86,15 @@ Where:
 ### 2. Spectral Orthogonality Condition & Doppler Margins
 For non-coherent FSK demodulation without inter-carrier interference (ICI), the tone spacing must satisfy the continuous orthogonality condition over symbol duration $T_{\text{sym}}$:
 
-$$\Delta f \ge \frac{1}{T_{\text{sym}}}$$
+```math
+\Delta f \ge \frac{1}{T_{\text{sym}}}
+```
 
 At the default transmission rate of $T_{\text{sym}} = 80\text{ ms}$, the theoretical minimum separation is:
 
-$$\Delta f_{\text{min}} = \frac{1}{0.080\text{ s}} = 12.5\text{ Hz}$$
+```math
+\Delta f_{\text{min}} = \frac{1}{0.080\text{ s}} = 12.5\text{ Hz}
+```
 
 Project Vakta enforces:
 * **Audible Band:** $\Delta f = 80\text{ Hz} \implies \frac{\Delta f}{\Delta f_{\text{min}}} = 6.40\times \text{ guard ratio}$
@@ -91,11 +103,15 @@ Project Vakta enforces:
 #### Doppler Shift Immunity:
 The Doppler frequency shift $\Delta f_D$ caused by relative physical movement at velocity $v$ in room air ($c \approx 343\text{ m/s}$) is:
 
-$$\Delta f_D = f_c \left(\frac{v}{c}\right)$$
+```math
+\Delta f_D = f_c \left(\frac{v}{c}\right)
+```
 
 For a transmitter or receiver moved rapidly by hand ($v \approx 1.5\text{ m/s}$) at $f_c = 19\text{ kHz}$:
 
-$$\Delta f_D = 19000 \cdot \left(\frac{1.5}{343}\right) \approx 83.09\text{ Hz}$$
+```math
+\Delta f_D \approx 19000 \cdot \left(\frac{1.5}{343}\right) \approx 83.09\text{ Hz}
+```
 
 Because our sub-band spacing ($\Delta f = 100\text{ Hz}$) and FFT bin aggregation window are parameterized with an adaptive peak-neighborhood search ($\pm 35\text{ Hz}$), the receiver tolerates ambient room vibrations and physical movements without symbol drift.
 
@@ -106,11 +122,13 @@ Abrupt rectangular on/off keying causes spectral leakage (Gibbs phenomenon) with
 
 Project Vakta shapes the envelope of each tone burst with a symmetrical raised-cosine taper applied to the Web Audio `GainNode`:
 
-$$w(t) = \begin{cases} 
+```math
+w(t) = \begin{cases} 
 \frac{1}{2}\left[1 - \cos\left(\frac{\pi t}{T_{\text{ramp}}}\right)\right] & 0 \le t < T_{\text{ramp}} \\
 1 & T_{\text{ramp}} \le t < T_{\text{sym}} - T_{\text{ramp}} \\
 \frac{1}{2}\left[1 + \cos\left(\frac{\pi (t - (T_{\text{sym}} - T_{\text{ramp}}))}{T_{\text{ramp}}}\right)\right] & T_{\text{sym}} - T_{\text{ramp}} \le t \le T_{\text{sym}}
-\end{cases}$$
+\end{cases}
+```
 
 Where $T_{\text{ramp}} = 5\text{ ms}$. This guarantees that spectral sidelobes fall below **$-32\text{ dB}$**, eliminating false adjacent-bin triggers.
 
@@ -145,7 +163,9 @@ Where $T_{\text{ramp}} = 5\text{ ms}$. This guarantees that spectral sidelobes f
 
 To ensure zero transmission corruption over multipath room acoustics, Project Vakta implements an 8-bit Cyclic Redundancy Check using the standard ATM/ITU polynomial:
 
-$$G(x) = x^8 + x^2 + x^1 + 1 \quad (\text{Binary: } 100000111_2 \implies 0\text{x07})$$
+```math
+G(x) = x^8 + x^2 + x^1 + 1 \quad (\text{Binary: } 100000111_2 \implies 0\text{x07})
+```
 
 ### Mathematical Properties:
 * **Hamming Distance:** $d = 4$ for frame lengths up to 119 bits.
@@ -158,7 +178,9 @@ $$G(x) = x^8 + x^2 + x^1 + 1 \quad (\text{Binary: } 100000111_2 \implies 0\text{
 
 Packets failing the polynomial division:
 
-$$R(x) = [M(x) \cdot x^8] \pmod{G(x)} \ne 0$$
+```math
+R(x) = [M(x) \cdot x^8] \pmod{G(x)} = 0
+```
 
 are automatically rejected at the PHY layer, preventing corrupted data from reaching the application layer.
 
@@ -171,18 +193,24 @@ The receiving engine captures live acoustic pressure data via `navigator.mediaDe
 ### 1. Discrete Frequency Bin Resolution
 The continuous audio stream is digitized at sample rate $F_s$ ($44,100\text{ Hz}$ or $48,000\text{ Hz}$) with an FFT size $N_{\text{FFT}} = 4096$:
 
-$$\Delta f_{\text{bin}} = \frac{F_s}{N_{\text{FFT}}} = \frac{48000\text{ Hz}}{4096} \approx 11.71875\text{ Hz/bin}$$
+```math
+\Delta f_{\text{bin}} = \frac{F_s}{N_{\text{FFT}}} = \frac{48000\text{ Hz}}{4096} = 11.71875\text{ Hz/bin}
+```
 
 Every tone frequency $f$ is evaluated by mapping it to its discrete frequency index $i$:
 
-$$i = \left\lfloor \frac{f}{\Delta f_{\text{bin}}} + 0.5 \right\rfloor$$
+```math
+i = \left\lfloor \frac{f}{\Delta f_{\text{bin}}} + 0.5 \right\rfloor
+```
 
 ### 2. Mid-Symbol Peak Energy Sampling
 In enclosed rooms, multipath acoustics create constructive and destructive wave interference during tone transitions. 
 
 To achieve maximum Signal-to-Interference Ratio (SIR), the demodulator samples energy **at the midpoint of each symbol period**:
 
-$$t_{\text{sample}} = t_{\text{sym\_start}} + \frac{1}{2} T_{\text{sym}} \quad (t = 40\text{ ms})$$
+```math
+t_{\text{sample}} = t_{\text{sym\_start}} + \frac{1}{2} T_{\text{sym}} = 40\text{ ms}
+```
 
 This completely isolates the detector from transient phase discontinuities and decaying echoes of preceding symbols.
 
@@ -201,7 +229,9 @@ navigator.mediaDevices.getUserMedia({
 
 The receiver calculates a continuous real-time noise floor $\sigma_{\text{ambient}}$ from unallocated guard bands and requires an adaptive signal-to-noise margin:
 
-$$\text{SNR}_{\text{instantaneous}} = 20 \log_{10}\left(\frac{V_{\text{tone}}}{V_{\text{ambient}}}\right) \ge 12\text{ dB}$$
+```math
+\text{SNR}_{\text{instantaneous}} = 20 \log_{10}\left(\frac{V_{\text{tone}}}{V_{\text{ambient}}}\right) \ge 12\text{ dB}
+```
 
 ---
 
