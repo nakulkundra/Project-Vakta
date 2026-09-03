@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 280" width="100%" height="280">
+  <defs>
+    <!-- Background Dark Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#040711" />
+      <stop offset="50%" stop-color="#070c1a" />
+      <stop offset="100%" stop-color="#03050c" />
+    </linearGradient>
+
+    <!-- Subtle VIBGYOR Border Gradient -->
+    <linearGradient id="vibgyorBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b00ff" stop-opacity="0.6" />
+      <stop offset="16.6%" stop-color="#4b0082" stop-opacity="0.5" />
+      <stop offset="33.3%" stop-color="#0070f3" stop-opacity="0.6" />
+      <stop offset="50%" stop-color="#00e676" stop-opacity="0.6" />
+      <stop offset="66.6%" stop-color="#ffea00" stop-opacity="0.5" />
+      <stop offset="83.3%" stop-color="#ff7700" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#ff0055" stop-opacity="0.6" />
+    </linearGradient>
+
+    <!-- Horizontal VIBGYOR for Wave -->
+    <linearGradient id="vibgyorWave" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8b00ff" />
+      <stop offset="16.6%" stop-color="#4b0082" />
+      <stop offset="33.3%" stop-color="#0070f3" />
+      <stop offset="50%" stop-color="#00e676" />
+      <stop offset="66.6%" stop-color="#ffea00" />
+      <stop offset="83.3%" stop-color="#ff7700" />
+      <stop offset="100%" stop-color="#ff0055" />
+    </linearGradient>
+
+    <!-- Glass Surface Fill -->
+    <linearGradient id="glassFill" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0e172a" stop-opacity="0.75" />
+      <stop offset="100%" stop-color="#080e1d" stop-opacity="0.85" />
+    </linearGradient>
+
+    <!-- Blur Filters for Ambient Orbs -->
+    <filter id="blurOrb" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="60" />
+    </filter>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6" />
+    </filter>
+  </defs>
+
+  <!-- Canvas Background -->
+  <rect width="1000" height="280" fill="url(#bgGrad)" />
+
+  <!-- Ambient Low-Opacity Colored Light Spots (Soft, Not Loud) -->
+  <circle cx="150" cy="50" r="140" fill="#8b00ff" opacity="0.12" filter="url(#blurOrb)" />
+  <circle cx="850" cy="220" r="140" fill="#0070f3" opacity="0.12" filter="url(#blurOrb)" />
+  <circle cx="500" cy="140" r="120" fill="#00e676" opacity="0.08" filter="url(#blurOrb)" />
+
+  <!-- Central Liquid Glass Panel with Subtle VIBGYOR Border -->
+  <g transform="translate(40, 30)">
+    <!-- Ambient Glass Shadow -->
+    <rect x="0" y="0" width="920" height="220" rx="18" fill="#000000" opacity="0.45" />
+
+    <!-- Glass Panel Surface -->
+    <rect x="0" y="0" width="920" height="220" rx="18" fill="url(#glassFill)" stroke="url(#vibgyorBorder)" stroke-width="1.5" />
+
+    <!-- Specular Top Rim Reflection -->
+    <path d="M 2 18 Q 2 2 18 2 L 902 2 Q 918 2 918 18" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="1" />
+
+    <!-- Stylized Acoustic Sine Waves passing through center -->
+    <path d="M 60 175 Q 110 135 160 175 T 260 175 T 360 175 T 460 175 T 560 175 T 660 175 T 760 175 T 860 175" 
+          fill="none" stroke="url(#vibgyorWave)" stroke-width="1.5" stroke-opacity="0.45" />
+    
+    <path d="M 60 175 Q 110 150 160 175 T 260 175 T 360 175 T 460 175 T 560 175 T 660 175 T 760 175 T 860 175" 
+          fill="none" stroke="url(#vibgyorWave)" stroke-width="1" stroke-opacity="0.25" />
+
+    <!-- Pill Badge: Data Over Sound Protocol -->
+    <g transform="translate(370, 30)">
+      <rect x="0" y="0" width="180" height="26" rx="13" fill="#080e1c" fill-opacity="0.8" stroke="url(#vibgyorBorder)" stroke-width="1" />
+      <circle cx="16" cy="13" r="3.5" fill="#00e676" />
+      <text x="30" y="17" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="700" letter-spacing="1">16-FSK ACOUSTIC PHY</text>
+    </g>
+
+    <!-- Main Project Brand Title -->
+    <text x="460" y="105" text-anchor="middle" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="34" font-weight="800" letter-spacing="-0.5">
+      PROJECT VAKTA (वक्ता)
+    </text>
+
+    <!-- Subtitle: Subtle & Clean -->
+    <text x="460" y="138" text-anchor="middle" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="500" letter-spacing="1.5">
+      AIRBORNE DATA-OVER-SOUND • LIQUID GLASS &amp; SUBTLE VIBGYOR BORDERS
+    </text>
+  </g>
+</svg>
