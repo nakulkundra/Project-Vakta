@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Vakta — Data-Over-Sound PoC</title>
+  <style>
+    :root {
+      --bg-main: #0b0f19;
+      --bg-card: #131b2e;
+      --bg-card-hover: #1a243d;
+      --bg-input: #080c14;
+      --border: #24324f;
+      --primary: #00d2ff;
+      --primary-glow: rgba(0, 210, 255, 0.35);
+      --accent: #3a7bd5;
+      --success: #00e676;
+      --warning: #ffab00;
+      --danger: #ff5252;
+      --text-main: #f0f4fc;
+      --text-muted: #8a9bb8;
+      --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 16px var(--primary-glow);
+    }
+
+    .brand-logo svg {
+      width: 22px;
+      height: 22px;
+      fill: #fff;
+    }
+
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, #ffffff, var(--primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .view-selector {
+      display: flex;
+      background: var(--bg-input);
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      gap: 4px;
+    }
+
+    .view-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .view-btn:hover {
+      color: var(--text-main);
+    }
+
+    .view-btn.active {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(58, 123, 213, 0.4);
+    }
+
+    main {
+      flex: 1;
+      max-width: 1300px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .app-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    .card.tx::before {
+      background: linear-gradient(90deg, var(--accent), var(--primary));
+    }
+
+    .card.rx::before {
+      background: linear-gradient(90deg, var(--success), #00b0ff);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--text-muted);
+    }
+
+    .badge.listening .badge-dot {
+      background: var(--primary);
+      box-shadow: 0 0 8px var(--primary);
+      animation: pulse 1.5s infinite;
+    }
+
+    .badge.receiving .badge-dot {
+      background: var(--warning);
+      box-shadow: 0 0 8px var(--warning);
+      animation: pulse 0.5s infinite;
+    }
+
+    .badge.success .badge-dot {
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success);
+    }
+
+    .badge.error .badge-dot {
+      background: var(--danger);
+      box-shadow: 0 0 8px var(--danger);
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.6; }
+    }
+
+    /* Form Controls */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .form-label span.hint {
+      font-weight: normal;
+      color: #617394;
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-main);
+      padding: 12px 14px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--primary-glow);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    /* Preset Tags */
+    .presets {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .preset-chip {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.78rem;
+      padding: 4px 8px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .preset-chip:hover {
+      background: rgba(0, 210, 255, 0.1);
+      border-color: var(--primary);
+      color: var(--text-main);
+    }
+
+    /* Sliders & Toggles */
+    .controls-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .range-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    input[type="range"] {
+      flex: 1;
+      accent-color: var(--primary);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--primary));
+      color: #fff;
+      box-shadow: 0 4px 16px var(--primary-glow);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px var(--primary-glow);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #00b09b, var(--success));
+      color: #0b1a14;
+      font-weight: 700;
+      box-shadow: 0 4px 16px rgba(0, 230, 118, 0.3);
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* Progress bar */
+    .progress-bar-wrap {
+      height: 8px;
+      background: var(--bg-input);
+      border-radius: 4px;
+      overflow: hidden;
+      display: none;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--primary));
+      transition: width 0.05s linear;
+    }
+
+    /* Spectrogram Canvas */
+    .canvas-container {
+      position: relative;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      height: 160px;
+    }
+
+    canvas#spectrumCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .canvas-overlay {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--primary);
+      background: rgba(8, 12, 20, 0.75);
+      padding: 4px 8px;
+      border-radius: 4px;
+      pointer-events: none;
+    }
+
+    /* Received Message Box */
+    .message-output {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .message-output.has-message {
+      border-color: var(--success);
+      box-shadow: 0 0 16px rgba(0, 230, 118, 0.2);
+    }
+
+    .message-text {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      color: #fff;
+      word-break: break-all;
+    }
+
+    .message-meta {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 8px;
+    }
+
+    /* History table */
+    .history-section {
+      margin-top: 8px;
+    }
+
+    .history-list {
+      max-height: 140px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .history-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+    }
+
+    .history-item .text {
+      font-family: var(--font-mono);
+      color: var(--text-main);
+    }
+
+    .history-item .time {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    /* Info Bar */
+    .info-bar {
+      background: rgba(58, 123, 213, 0.1);
+      border: 1px solid rgba(0, 210, 255, 0.25);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.85rem;
+    }
+
+    .info-bar strong {
+      color: var(--primary);
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-title">Project Vakta (वक्ता)</div>
+        <div class="brand-subtitle">Airborne Data-Over-Sound Communication</div>
+      </div>
+    </div>
+
+    <!-- View Switcher -->
+    <div class="view-selector">
+      <button class="view-btn active" id="viewDual">Split Dual View</button>
+      <button class="view-btn" id="viewTx">Transmitter Only</button>
+      <button class="view-btn" id="viewRx">Receiver Only</button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main>
+
+    <div class="info-bar">
+      <div>
+        <strong>Acoustic M2M Protocol:</strong> Uses 16-FSK audio modulation over airborne sound waves. No Wi-Fi, Bluetooth, or RF pairing required.
+      </div>
+      <div id="audioStatusBadge" class="badge">
+        <span class="badge-dot"></span> Web Audio Ready
+      </div>
+    </div>
+
+    <div class="app-grid" id="mainGrid">
+
+      <!-- TRANSMITTER PANEL -->
+      <section class="card tx" id="txPanel">
+        <div class="card-header">
+          <div class="card-title">
+            <span>🔊 Transmitter (Speaker)</span>
+          </div>
+          <span class="badge" id="txStatusBadge">
+            <span class="badge-dot"></span> Ready
+          </span>
+        </div>
+
+        <!-- Frequency Mode -->
+        <div class="form-group">
+          <label class="form-label" for="txProfileSelect">
+            Frequency Profile
+            <span class="hint">Select band for transmission</span>
+          </label>
+          <select id="txProfileSelect">
+            <option value="audible" selected>Audible Robust (1.5 kHz – 3.0 kHz) — Recommended</option>
+            <option value="ultrasonic">Near-Ultrasound Silent (18.0 kHz – 20.0 kHz)</option>
+          </select>
+        </div>
+
+        <!-- Message Input -->
+        <div class="form-group">
+          <label class="form-label" for="txMessageInput">
+            Message Payload
+            <span class="hint" id="charCount">0 / 120 chars</span>
+          </label>
+          <textarea id="txMessageInput" placeholder="Enter text to transmit over sound..." maxlength="120">Hello World!</textarea>
+        </div>
+
+        <!-- Quick Presets -->
+        <div class="presets">
+          <button class="preset-chip" data-text="Hello World 👋">Hello World 👋</button>
+          <button class="preset-chip" data-text="AUTH: TOKEN_7942">AUTH: TOKEN_7942</button>
+          <button class="preset-chip" data-text="POS_PAY_INR_500">POS_PAY_INR_500</button>
+          <button class="preset-chip" data-text="COORDS: 28.6139, 77.2090">GPS Coordinates</button>
+        </div>
+
+        <!-- Transmission Controls -->
+        <div class="controls-row">
+          <div class="form-group">
+            <label class="form-label">
+              Symbol Speed
+              <span class="hint" id="speedLabel">80 ms/sym</span>
+            </label>
+            <input type="range" id="symbolSpeedRange" min="50" max="150" value="80" step="10">
+          </div>
+          <div class="form-group">
+            <label class="form-label">
+              Output Volume
+              <span class="hint" id="volumeLabel">80%</span>
+            </label>
+            <input type="range" id="volumeRange" min="10" max="100" value="80" step="5">
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar-wrap" id="txProgressWrap">
+          <div class="progress-bar-fill" id="txProgressBar"></div>
+        </div>
+
+        <!-- Transmit Action Button -->
+        <button class="btn btn-primary" id="btnTransmit">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+          <span id="btnTransmitText">Transmit Over Sound</span>
+        </button>
+      </section>
+
+      <!-- RECEIVER PANEL -->
+      <section class="card rx" id="rxPanel">
+        <div class="card-header">
+          <div class="card-title">
+            <span>🎙️ Receiver (Microphone)</span>
+          </div>
+          <span class="badge" id="rxStatusBadge">
+            <span class="badge-dot"></span> Standby (Mic Off)
+          </span>
+        </div>
+
+        <!-- Receiver Profile Match -->
+        <div class="form-group">
+          <label class="form-label" for="rxProfileSelect">
+            Listening Profile
+            <span class="hint">Must match the transmitter band</span>
+          </label>
+          <select id="rxProfileSelect">
+            <option value="audible" selected>Audible Robust (1.5 kHz – 3.0 kHz) — Recommended</option>
+            <option value="ultrasonic">Near-Ultrasound Silent (18.0 kHz – 20.0 kHz)</option>
+          </select>
+        </div>
+
+        <!-- Start/Stop Mic Button -->
+        <button class="btn btn-success" id="btnToggleListen">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/>
+          </svg>
+          <span id="btnListenText">Start Listening (Enable Mic)</span>
+        </button>
+
+        <!-- Spectrum Canvas Visualizer -->
+        <div class="form-group">
+          <label class="form-label">
+            Live Audio Spectrum & Spectrogram
+            <span class="hint" id="snrLabel">SNR: -- dB</span>
+          </label>
+          <div class="canvas-container">
+            <canvas id="spectrumCanvas"></canvas>
+            <div class="canvas-overlay" id="canvasOverlay">Detection Window: Active</div>
+          </div>
+        </div>
+
+        <!-- Decoded Message Result -->
+        <div class="form-group">
+          <label class="form-label">
+            Decoded Message
+            <span class="hint" id="rxStateDetail">Awaiting signal...</span>
+          </label>
+          <div class="message-output" id="messageOutput">
+            <div class="message-text" id="messageText">— No message received yet —</div>
+            <div class="message-meta">
+              <span id="messageCrc">CRC: --</span>
+              <span id="messageTime">Time: --</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- History -->
+        <div class="history-section">
+          <label class="form-label" style="margin-bottom: 6px;">
+            Received Log
+            <span class="hint" id="historyCount">0 messages</span>
+          </label>
+          <div class="history-list" id="historyList">
+            <div style="font-size: 0.8rem; color: var(--text-muted); padding: 8px;">No packets logged yet.</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <footer>
+    Project Vakta • Built with Web Audio API & HTML5 • Zero external dependencies • Local & Physical-Layer Contained
+  </footer>
+
+  <!-- Core Scripts -->
+  <script src="vakta-core.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
