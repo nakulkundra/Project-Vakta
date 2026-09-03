@@ -6,21 +6,33 @@
   <title>Project Vakta — Data-Over-Sound PoC</title>
   <style>
     :root {
-      --bg-main: #0b0f19;
-      --bg-card: #131b2e;
-      --bg-card-hover: #1a243d;
-      --bg-input: #080c14;
-      --border: #24324f;
-      --primary: #00d2ff;
-      --primary-glow: rgba(0, 210, 255, 0.35);
-      --accent: #3a7bd5;
-      --success: #00e676;
-      --warning: #ffab00;
-      --danger: #ff5252;
-      --text-main: #f0f4fc;
-      --text-muted: #8a9bb8;
+      /* Dark Mode Palette (Only) */
+      --bg-dark-base: #03060d;
+      --bg-glass-card: rgba(14, 20, 36, 0.52);
+      --bg-glass-card-hover: rgba(20, 28, 50, 0.62);
+      --bg-glass-input: rgba(6, 10, 22, 0.68);
+      --glass-border: rgba(255, 255, 255, 0.12);
+      --glass-border-highlight: rgba(255, 255, 255, 0.28);
+      --glass-specular: inset 0 1px 1px 0 rgba(255, 255, 255, 0.25), inset 0 -1px 2px 0 rgba(0, 0, 0, 0.45);
+      --glass-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.75), 0 0 30px rgba(0, 0, 0, 0.3);
+
+      /* VIBGYOR Tokens (Violet, Indigo, Blue, Green, Yellow, Orange, Red) */
+      --v-violet: #8b00ff;
+      --v-indigo: #4b0082;
+      --v-blue: #0070f3;
+      --v-green: #00e676;
+      --v-yellow: #ffea00;
+      --v-orange: #ff7700;
+      --v-red: #ff0055;
+
+      --vibgyor-gradient: linear-gradient(135deg, #8b00ff 0%, #4b0082 16.6%, #0070f3 33.3%, #00e676 50%, #ffea00 66.6%, #ff7700 83.3%, #ff0055 100%);
+      --vibgyor-h: linear-gradient(90deg, #8b00ff 0%, #4b0082 16.6%, #0070f3 33.3%, #00e676 50%, #ffea00 66.6%, #ff7700 83.3%, #ff0055 100%);
+      --vibgyor-glow: 0 0 25px rgba(0, 230, 118, 0.3), 0 0 45px rgba(139, 0, 255, 0.25);
+
+      --text-main: #f4f8ff;
+      --text-muted: #94a3b8;
       --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-      --radius: 12px;
+      --radius: 16px;
     }
 
     * {
@@ -30,23 +42,109 @@
     }
 
     body {
-      background-color: var(--bg-main);
+      background-color: var(--bg-dark-base);
       color: var(--text-main);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       min-height: 100vh;
       line-height: 1.5;
       display: flex;
       flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
     }
 
+    /* Ambient Liquid Glowing Orbs in Background */
+    .liquid-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(95px);
+      opacity: 0.38;
+      mix-blend-mode: screen;
+      will-change: transform;
+    }
+
+    .orb-1 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, #8b00ff 0%, #4b0082 70%, transparent 100%);
+      top: -100px;
+      left: -80px;
+      animation: floatOrb1 22s infinite alternate ease-in-out;
+    }
+
+    .orb-2 {
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, #0070f3 0%, #00e676 70%, transparent 100%);
+      bottom: -100px;
+      right: -60px;
+      animation: floatOrb2 25s infinite alternate ease-in-out;
+    }
+
+    .orb-3 {
+      width: 440px;
+      height: 440px;
+      background: radial-gradient(circle, #ffea00 0%, #ff7700 45%, #ff0055 80%, transparent 100%);
+      top: 35%;
+      left: 30%;
+      opacity: 0.22;
+      animation: floatOrb3 28s infinite alternate ease-in-out;
+    }
+
+    @keyframes floatOrb1 {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(120px, 90px) scale(1.15); }
+    }
+
+    @keyframes floatOrb2 {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(-100px, -80px) scale(1.18); }
+    }
+
+    @keyframes floatOrb3 {
+      0% { transform: translate(0, 0) scale(0.9); }
+      100% { transform: translate(-80px, 70px) scale(1.12); }
+    }
+
+    /* Subtle Liquid Caustics Grid Overlay */
+    .glass-caustics {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: 
+        radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 40px 40px, 20px 20px;
+      background-position: 0 0, 20px 20px;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.6;
+    }
+
+    /* Header - Liquid Glass */
     header {
-      border-bottom: 1px solid var(--border);
-      background: rgba(11, 15, 25, 0.85);
-      backdrop-filter: blur(12px);
       position: sticky;
       top: 0;
       z-index: 100;
-      padding: 16px 24px;
+      background: rgba(8, 13, 26, 0.68);
+      backdrop-filter: blur(24px) saturate(200%);
+      -webkit-backdrop-filter: blur(24px) saturate(200%);
+      border-bottom: 1px solid var(--glass-border);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+      padding: 16px 28px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -54,85 +152,163 @@
       gap: 16px;
     }
 
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--vibgyor-h);
+      opacity: 0.85;
+      box-shadow: 0 0 12px rgba(0, 230, 118, 0.4);
+    }
+
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
     }
 
     .brand-logo {
-      width: 36px;
-      height: 36px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      border-radius: 8px;
+      width: 40px;
+      height: 40px;
+      background: var(--vibgyor-gradient);
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 16px var(--primary-glow);
+      box-shadow: 0 4px 20px rgba(0, 112, 243, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-logo::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, transparent 100%);
+      border-radius: 10px 10px 0 0;
     }
 
     .brand-logo svg {
       width: 22px;
       height: 22px;
-      fill: #fff;
+      fill: #ffffff;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+      z-index: 1;
     }
 
     .brand-title {
-      font-size: 1.25rem;
-      font-weight: 700;
+      font-size: 1.35rem;
+      font-weight: 800;
       letter-spacing: -0.5px;
-      background: linear-gradient(90deg, #ffffff, var(--primary));
+      background: var(--vibgyor-h);
+      background-size: 200% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      animation: vibgyorFlow 8s linear infinite;
+    }
+
+    @keyframes vibgyorFlow {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
     }
 
     .brand-subtitle {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
+      font-weight: 600;
     }
 
     .view-selector {
       display: flex;
-      background: var(--bg-input);
+      background: rgba(6, 10, 22, 0.7);
+      backdrop-filter: blur(16px);
       padding: 4px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
+      border-radius: 10px;
+      border: 1px solid var(--glass-border);
       gap: 4px;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
     }
 
     .view-btn {
       background: transparent;
       border: none;
       color: var(--text-muted);
-      padding: 6px 14px;
-      border-radius: 6px;
+      padding: 7px 16px;
+      border-radius: 8px;
       font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
     }
 
     .view-btn:hover {
       color: var(--text-main);
+      background: rgba(255, 255, 255, 0.05);
     }
 
     .view-btn.active {
-      background: var(--accent);
       color: #fff;
-      box-shadow: 0 2px 8px rgba(58, 123, 213, 0.4);
+      background: var(--vibgyor-gradient);
+      box-shadow: 0 4px 14px rgba(0, 112, 243, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.3);
     }
 
+    /* Main Container */
     main {
+      position: relative;
+      z-index: 2;
       flex: 1;
       max-width: 1300px;
       width: 100%;
       margin: 0 auto;
-      padding: 24px;
+      padding: 28px 24px;
       display: flex;
       flex-direction: column;
       gap: 24px;
+    }
+
+    /* Info Bar - Liquid Glass with VIBGYOR Accent */
+    .info-bar {
+      background: rgba(14, 20, 38, 0.6);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 16px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.88rem;
+      box-shadow: var(--glass-shadow), var(--glass-specular);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .info-bar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--vibgyor-gradient);
+    }
+
+    .info-bar strong {
+      background: var(--vibgyor-h);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
     }
 
     .app-grid {
@@ -147,19 +323,29 @@
       }
     }
 
+    /* Liquid Glass Cards */
     .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
+      background: var(--bg-glass-card);
+      backdrop-filter: blur(28px) saturate(190%);
+      -webkit-backdrop-filter: blur(28px) saturate(190%);
+      border: 1px solid var(--glass-border);
       border-radius: var(--radius);
-      padding: 24px;
+      padding: 26px;
       display: flex;
       flex-direction: column;
       gap: 20px;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      box-shadow: var(--glass-shadow), var(--glass-specular);
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
+    .card:hover {
+      border-color: var(--glass-border-highlight);
+      box-shadow: 0 24px 60px -10px rgba(0, 0, 0, 0.85), 0 0 25px rgba(255, 255, 255, 0.06), var(--glass-specular);
+    }
+
+    /* Top Liquid VIBGYOR Reflection Bar */
     .card::before {
       content: '';
       position: absolute;
@@ -167,15 +353,9 @@
       left: 0;
       right: 0;
       height: 3px;
-      background: linear-gradient(90deg, transparent, var(--border), transparent);
-    }
-
-    .card.tx::before {
-      background: linear-gradient(90deg, var(--accent), var(--primary));
-    }
-
-    .card.rx::before {
-      background: linear-gradient(90deg, var(--success), #00b0ff);
+      background: var(--vibgyor-h);
+      opacity: 0.85;
+      box-shadow: 0 0 16px rgba(0, 230, 118, 0.5);
     }
 
     .card-header {
@@ -185,60 +365,87 @@
     }
 
     .card-title {
-      font-size: 1.15rem;
-      font-weight: 600;
+      font-size: 1.18rem;
+      font-weight: 700;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
+    /* Liquid Badges */
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      padding: 4px 10px;
-      border-radius: 20px;
+      padding: 5px 12px;
+      border-radius: 24px;
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px);
       color: var(--text-muted);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
     }
 
     .badge-dot {
-      width: 7px;
-      height: 7px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: var(--text-muted);
     }
 
+    .badge.listening {
+      border-color: rgba(0, 112, 243, 0.4);
+      color: #93c5fd;
+      background: rgba(0, 112, 243, 0.1);
+    }
+
     .badge.listening .badge-dot {
-      background: var(--primary);
-      box-shadow: 0 0 8px var(--primary);
+      background: var(--v-blue);
+      box-shadow: 0 0 10px var(--v-blue);
       animation: pulse 1.5s infinite;
     }
 
+    .badge.receiving {
+      border-color: rgba(255, 234, 0, 0.4);
+      color: #fef08a;
+      background: rgba(255, 234, 0, 0.1);
+    }
+
     .badge.receiving .badge-dot {
-      background: var(--warning);
-      box-shadow: 0 0 8px var(--warning);
-      animation: pulse 0.5s infinite;
+      background: var(--v-yellow);
+      box-shadow: 0 0 10px var(--v-yellow);
+      animation: pulse 0.6s infinite;
+    }
+
+    .badge.success {
+      border-color: rgba(0, 230, 118, 0.4);
+      color: #a7f3d0;
+      background: rgba(0, 230, 118, 0.1);
     }
 
     .badge.success .badge-dot {
-      background: var(--success);
-      box-shadow: 0 0 8px var(--success);
+      background: var(--v-green);
+      box-shadow: 0 0 10px var(--v-green);
+    }
+
+    .badge.error {
+      border-color: rgba(255, 0, 85, 0.4);
+      color: #fecdd3;
+      background: rgba(255, 0, 85, 0.1);
     }
 
     .badge.error .badge-dot {
-      background: var(--danger);
-      box-shadow: 0 0 8px var(--danger);
+      background: var(--v-red);
+      box-shadow: 0 0 10px var(--v-red);
     }
 
     @keyframes pulse {
       0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.4); opacity: 0.6; }
+      50% { transform: scale(1.35); opacity: 0.6; }
     }
 
     /* Form Controls */
@@ -258,118 +465,169 @@
 
     .form-label span.hint {
       font-weight: normal;
-      color: #617394;
+      color: #64748b;
     }
 
+    /* Liquid Glass Inputs & Selects */
     input[type="text"],
     textarea,
     select {
-      background: var(--bg-input);
-      border: 1px solid var(--border);
-      border-radius: 8px;
+      background: var(--bg-glass-input);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
       color: var(--text-main);
-      padding: 12px 14px;
+      padding: 12px 16px;
       font-size: 0.95rem;
       outline: none;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
       font-family: inherit;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4), var(--glass-specular);
     }
 
     input[type="text"]:focus,
     textarea:focus,
     select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px var(--primary-glow);
+      border-color: rgba(255, 255, 255, 0.35);
+      box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.35), inset 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
+
+    select option {
+      background: #0d1424;
+      color: #fff;
     }
 
     textarea {
       resize: vertical;
-      min-height: 80px;
+      min-height: 85px;
     }
 
-    /* Preset Tags */
+    /* Liquid Preset Chips */
     .presets {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 8px;
     }
 
     .preset-chip {
       background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border);
-      border-radius: 6px;
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
       font-size: 0.78rem;
-      padding: 4px 8px;
+      padding: 5px 10px;
       color: var(--text-muted);
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
     }
 
     .preset-chip:hover {
-      background: rgba(0, 210, 255, 0.1);
-      border-color: var(--primary);
-      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border-color: var(--glass-border-highlight);
+      box-shadow: 0 2px 10px rgba(0, 112, 243, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
     }
 
-    /* Sliders & Toggles */
+    /* Sliders with VIBGYOR Track */
     .controls-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
     }
 
-    .range-wrap {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
     input[type="range"] {
-      flex: 1;
-      accent-color: var(--primary);
+      width: 100%;
+      height: 6px;
+      border-radius: 4px;
+      background: var(--vibgyor-h);
+      outline: none;
+      -webkit-appearance: none;
+      box-shadow: 0 0 8px rgba(0, 230, 118, 0.3);
     }
 
-    /* Buttons */
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 2px solid #0070f3;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 10px #00e676;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    /* Liquid Glass Buttons with Specular Shine */
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-weight: 600;
+      gap: 10px;
+      padding: 13px 22px;
+      border-radius: 12px;
+      font-size: 0.96rem;
+      font-weight: 700;
       cursor: pointer;
-      border: none;
-      transition: all 0.2s ease;
-      text-decoration: none;
+      border: 1px solid var(--glass-border-highlight);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), var(--glass-specular);
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, transparent 100%);
+      pointer-events: none;
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--primary));
-      color: #fff;
-      box-shadow: 0 4px 16px var(--primary-glow);
+      background: var(--vibgyor-gradient);
+      color: #ffffff;
+      box-shadow: 0 6px 24px rgba(0, 112, 243, 0.4), var(--glass-specular);
     }
 
     .btn-primary:hover:not(:disabled) {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px var(--primary-glow);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(139, 0, 255, 0.45), 0 0 20px rgba(0, 230, 118, 0.4), var(--glass-specular);
     }
 
     .btn-success {
-      background: linear-gradient(135deg, #00b09b, var(--success));
-      color: #0b1a14;
-      font-weight: 700;
-      box-shadow: 0 4px 16px rgba(0, 230, 118, 0.3);
+      background: linear-gradient(135deg, rgba(0, 230, 118, 0.85) 0%, rgba(0, 112, 243, 0.85) 100%);
+      color: #03150d;
+      box-shadow: 0 6px 24px rgba(0, 230, 118, 0.35), var(--glass-specular);
+    }
+
+    .btn-success:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0, 230, 118, 0.5), var(--glass-specular);
     }
 
     .btn-danger {
-      background: var(--danger);
-      color: #fff;
+      background: linear-gradient(135deg, #ff0055 0%, #ff7700 100%);
+      color: #ffffff;
+      box-shadow: 0 6px 24px rgba(255, 0, 85, 0.4), var(--glass-specular);
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(255, 0, 85, 0.55), var(--glass-specular);
     }
 
     .btn:disabled {
-      opacity: 0.5;
+      opacity: 0.45;
       cursor: not-allowed;
       transform: none !important;
     }
@@ -377,27 +635,31 @@
     /* Progress bar */
     .progress-bar-wrap {
       height: 8px;
-      background: var(--bg-input);
-      border-radius: 4px;
+      background: rgba(6, 10, 22, 0.8);
+      border-radius: 6px;
       overflow: hidden;
       display: none;
+      border: 1px solid var(--glass-border);
     }
 
     .progress-bar-fill {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, var(--accent), var(--primary));
+      background: var(--vibgyor-h);
+      box-shadow: 0 0 12px rgba(0, 230, 118, 0.5);
       transition: width 0.05s linear;
     }
 
-    /* Spectrogram Canvas */
+    /* Spectrum Canvas Container */
     .canvas-container {
       position: relative;
-      background: var(--bg-input);
-      border: 1px solid var(--border);
-      border-radius: 8px;
+      background: rgba(6, 10, 22, 0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
       overflow: hidden;
-      height: 160px;
+      height: 165px;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.7), var(--glass-specular);
     }
 
     canvas#spectrumCanvas {
@@ -409,38 +671,57 @@
     .canvas-overlay {
       position: absolute;
       top: 8px;
-      left: 8px;
+      left: 10px;
       font-family: var(--font-mono);
       font-size: 0.72rem;
-      color: var(--primary);
-      background: rgba(8, 12, 20, 0.75);
-      padding: 4px 8px;
-      border-radius: 4px;
+      color: #a5f3fc;
+      background: rgba(4, 8, 18, 0.8);
+      backdrop-filter: blur(8px);
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       pointer-events: none;
     }
 
-    /* Received Message Box */
+    /* Received Message Box - Liquid Frosted Card */
     .message-output {
-      background: var(--bg-input);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px;
-      min-height: 100px;
+      background: var(--bg-glass-input);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 18px;
+      min-height: 105px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4), var(--glass-specular);
+      position: relative;
+      overflow: hidden;
     }
 
     .message-output.has-message {
-      border-color: var(--success);
-      box-shadow: 0 0 16px rgba(0, 230, 118, 0.2);
+      border-color: rgba(0, 230, 118, 0.5);
+      background: rgba(0, 230, 118, 0.06);
+      box-shadow: 0 0 25px rgba(0, 230, 118, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    }
+
+    .message-output.has-message::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--vibgyor-h);
     }
 
     .message-text {
       font-family: var(--font-mono);
-      font-size: 1.1rem;
-      color: #fff;
+      font-size: 1.15rem;
+      color: #ffffff;
       word-break: break-all;
+      letter-spacing: 0.3px;
     }
 
     .message-meta {
@@ -448,13 +729,13 @@
       color: var(--text-muted);
       display: flex;
       justify-content: space-between;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 10px;
     }
 
     /* History table */
     .history-section {
-      margin-top: 8px;
+      margin-top: 6px;
     }
 
     .history-list {
@@ -467,13 +748,20 @@
 
     .history-item {
       background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 8px 12px;
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      padding: 8px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 0.85rem;
+      transition: all 0.2s ease;
+    }
+
+    .history-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--glass-border-highlight);
     }
 
     .history-item .text {
@@ -486,34 +774,28 @@
       color: var(--text-muted);
     }
 
-    /* Info Bar */
-    .info-bar {
-      background: rgba(58, 123, 213, 0.1);
-      border: 1px solid rgba(0, 210, 255, 0.25);
-      border-radius: var(--radius);
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      font-size: 0.85rem;
-    }
-
-    .info-bar strong {
-      color: var(--primary);
-    }
-
     footer {
+      position: relative;
+      z-index: 2;
       text-align: center;
-      padding: 20px;
-      font-size: 0.8rem;
+      padding: 24px;
+      font-size: 0.82rem;
       color: var(--text-muted);
-      border-top: 1px solid var(--border);
+      border-top: 1px solid var(--glass-border);
+      background: rgba(8, 13, 26, 0.5);
+      backdrop-filter: blur(20px);
     }
   </style>
 </head>
 <body>
+
+  <!-- Background Liquid Glow Orbs (VIBGYOR Aurora) -->
+  <div class="liquid-background">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="glass-caustics"></div>
 
   <!-- Header -->
   <header>
@@ -525,7 +807,7 @@
       </div>
       <div>
         <div class="brand-title">Project Vakta (वक्ता)</div>
-        <div class="brand-subtitle">Airborne Data-Over-Sound Communication</div>
+        <div class="brand-subtitle">Liquid Acoustic M2M Protocol</div>
       </div>
     </div>
 
@@ -542,10 +824,10 @@
 
     <div class="info-bar">
       <div>
-        <strong>Acoustic M2M Protocol:</strong> Uses 16-FSK audio modulation over airborne sound waves. No Wi-Fi, Bluetooth, or RF pairing required.
+        <strong>Acoustic Data-over-Sound:</strong> Transmitting 16-FSK packets over airborne acoustic waves. Zero RF, pairing, or internet needed.
       </div>
       <div id="audioStatusBadge" class="badge">
-        <span class="badge-dot"></span> Web Audio Ready
+        <span class="badge-dot"></span> Web Audio Active
       </div>
     </div>
 
@@ -657,7 +939,7 @@
         <!-- Spectrum Canvas Visualizer -->
         <div class="form-group">
           <label class="form-label">
-            Live Audio Spectrum & Spectrogram
+            Liquid FFT Spectrum Visualizer
             <span class="hint" id="snrLabel">SNR: -- dB</span>
           </label>
           <div class="canvas-container">
@@ -698,7 +980,7 @@
   </main>
 
   <footer>
-    Project Vakta • Built with Web Audio API & HTML5 • Zero external dependencies • Local & Physical-Layer Contained
+    Project Vakta • Liquid Glass & VIBGYOR Theme • Web Audio API Acoustic Transceiver
   </footer>
 
   <!-- Core Scripts -->

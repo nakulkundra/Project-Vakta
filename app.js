@@ -313,14 +313,25 @@ document.addEventListener('DOMContentLoaded', () => {
     canvasCtx.fillRect(0, 0, spectrumCanvas.width, spectrumCanvas.height);
   }
 
-  // --- Live Spectrum & Band Highlight Visualizer ---
+  // --- Live Spectrum & Band Highlight Visualizer (Liquid Glass & VIBGYOR) ---
   function renderSpectrum(audioInfo) {
     const { frequencyData, noiseFloor, analyser, sampleRate, profile, state } = audioInfo;
     const width = spectrumCanvas.width;
     const height = spectrumCanvas.height;
 
-    canvasCtx.fillStyle = '#080c14';
+    // Dark liquid glass base
+    canvasCtx.fillStyle = 'rgba(6, 10, 22, 0.92)';
     canvasCtx.fillRect(0, 0, width, height);
+
+    // Subtle glass gridlines
+    canvasCtx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+    canvasCtx.lineWidth = 1;
+    for (let gy = 0.25; gy < 1; gy += 0.25) {
+      canvasCtx.beginPath();
+      canvasCtx.moveTo(0, height * gy);
+      canvasCtx.lineTo(width, height * gy);
+      canvasCtx.stroke();
+    }
 
     const binCount = analyser.frequencyBinCount;
     const nyquist = sampleRate / 2;
@@ -329,21 +340,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const minBandX = (profile.minFreq / nyquist) * width;
     const maxBandX = (profile.maxFreq / nyquist) * width;
 
-    // Highlight target band
-    canvasCtx.fillStyle = state === 'RECEIVING' ? 'rgba(0, 230, 118, 0.12)' : 'rgba(0, 210, 255, 0.08)';
+    // Liquid Highlight on target detection band
+    if (state === 'RECEIVING') {
+      const bandGrad = canvasCtx.createLinearGradient(minBandX, 0, maxBandX, 0);
+      bandGrad.addColorStop(0, 'rgba(0, 230, 118, 0.18)');
+      bandGrad.addColorStop(1, 'rgba(0, 112, 243, 0.18)');
+      canvasCtx.fillStyle = bandGrad;
+    } else {
+      canvasCtx.fillStyle = 'rgba(139, 0, 255, 0.07)';
+    }
     canvasCtx.fillRect(minBandX, 0, Math.max(12, maxBandX - minBandX), height);
 
-    // Draw band border markers
-    canvasCtx.strokeStyle = state === 'RECEIVING' ? 'rgba(0, 230, 118, 0.4)' : 'rgba(0, 210, 255, 0.3)';
-    canvasCtx.setLineDash([3, 3]);
+    // Draw band border markers with VIBGYOR glow
+    canvasCtx.strokeStyle = state === 'RECEIVING' ? 'rgba(0, 230, 118, 0.65)' : 'rgba(0, 112, 243, 0.35)';
+    canvasCtx.setLineDash([4, 4]);
     canvasCtx.strokeRect(minBandX, 0, Math.max(12, maxBandX - minBandX), height);
     canvasCtx.setLineDash([]);
 
-    // Draw Spectrum Curve
-    canvasCtx.lineWidth = 1.5;
-    canvasCtx.beginPath();
+    // Full VIBGYOR Chromatic Gradient (Violet -> Indigo -> Blue -> Green -> Yellow -> Orange -> Red)
+    const vibgyorGrad = canvasCtx.createLinearGradient(0, 0, width, 0);
+    vibgyorGrad.addColorStop(0.00, '#8b00ff'); // Violet
+    vibgyorGrad.addColorStop(0.16, '#4b0082'); // Indigo
+    vibgyorGrad.addColorStop(0.33, '#0070f3'); // Blue
+    vibgyorGrad.addColorStop(0.50, '#00e676'); // Green
+    vibgyorGrad.addColorStop(0.66, '#ffea00'); // Yellow
+    vibgyorGrad.addColorStop(0.83, '#ff7700'); // Orange
+    vibgyorGrad.addColorStop(1.00, '#ff0055'); // Red
 
+    // Trace Spectrum Curve Points
     let maxInBand = -150;
+    const points = [];
 
     for (let i = 0; i < binCount; i++) {
       const freq = (i / binCount) * nyquist;
@@ -351,48 +377,74 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Map dB (-120 to -20 dB) to canvas height
       const db = frequencyData[i];
-      const normalized = Math.max(0, Math.min(1, (db + 120) / 100));
+      const normalized = Math.max(0, Math.min(1, (db + 115) / 95));
       const y = height - normalized * height;
 
-      if (i === 0) {
-        canvasCtx.moveTo(x, y);
-      } else {
-        canvasCtx.lineTo(x, y);
-      }
+      points.push({ x, y });
 
       if (freq >= profile.minFreq && freq <= profile.maxFreq && db > maxInBand) {
         maxInBand = db;
       }
     }
 
-    // Spectrum gradient stroke
-    const grad = canvasCtx.createLinearGradient(0, 0, width, 0);
-    grad.addColorStop(0, '#3a7bd5');
-    grad.addColorStop(0.5, '#00d2ff');
-    grad.addColorStop(1, '#00e676');
-    canvasCtx.strokeStyle = grad;
-    canvasCtx.stroke();
+    // Fill underneath curve with soft liquid VIBGYOR glow
+    if (points.length > 0) {
+      canvasCtx.save();
+      canvasCtx.beginPath();
+      canvasCtx.moveTo(0, height);
+      for (let p of points) {
+        canvasCtx.lineTo(p.x, p.y);
+      }
+      canvasCtx.lineTo(width, height);
+      canvasCtx.closePath();
 
-    // Mark 16 FSK Frequencies in target profile with small ticks
-    canvasCtx.fillStyle = 'rgba(0, 210, 255, 0.5)';
+      const fillGrad = canvasCtx.createLinearGradient(0, 0, width, height);
+      fillGrad.addColorStop(0.0, 'rgba(139, 0, 255, 0.18)');
+      fillGrad.addColorStop(0.3, 'rgba(0, 112, 243, 0.15)');
+      fillGrad.addColorStop(0.6, 'rgba(0, 230, 118, 0.15)');
+      fillGrad.addColorStop(1.0, 'rgba(255, 0, 85, 0.18)');
+      canvasCtx.fillStyle = fillGrad;
+      canvasCtx.fill();
+      canvasCtx.restore();
+    }
+
+    // Draw high-clarity VIBGYOR stroke curve
+    canvasCtx.save();
+    canvasCtx.lineWidth = 2.0;
+    canvasCtx.shadowColor = 'rgba(0, 230, 118, 0.4)';
+    canvasCtx.shadowBlur = 8;
+    canvasCtx.strokeStyle = vibgyorGrad;
+    canvasCtx.beginPath();
+    for (let i = 0; i < points.length; i++) {
+      if (i === 0) canvasCtx.moveTo(points[i].x, points[i].y);
+      else canvasCtx.lineTo(points[i].x, points[i].y);
+    }
+    canvasCtx.stroke();
+    canvasCtx.restore();
+
+    // Mark 16 FSK Frequencies in target profile with spectral ticks
     for (let nib = 0; nib < 16; nib++) {
       const f = profile.baseFreq + nib * profile.stepFreq;
       const fx = (f / nyquist) * width;
-      canvasCtx.fillRect(fx - 1, height - 8, 2, 8);
+      // Cycle through VIBGYOR hues for the 16 bins
+      const hue = Math.round((nib / 15) * 300);
+      canvasCtx.fillStyle = `hsla(${hue}, 100%, 65%, 0.8)`;
+      canvasCtx.fillRect(fx - 1, height - 10, 2, 10);
     }
 
-    // Mark Preamble Tones A and B
-    canvasCtx.fillStyle = '#ffab00';
+    // Mark Preamble Pilot Tones with bright glowing accents
     const paX = (profile.preambleA / nyquist) * width;
     const pbX = (profile.preambleB / nyquist) * width;
-    canvasCtx.fillRect(paX - 1, height - 14, 2, 14);
-    canvasCtx.fillRect(pbX - 1, height - 14, 2, 14);
+    canvasCtx.fillStyle = '#ffea00'; // Yellow
+    canvasCtx.fillRect(paX - 1.5, height - 16, 3, 16);
+    canvasCtx.fillStyle = '#ff7700'; // Orange
+    canvasCtx.fillRect(pbX - 1.5, height - 16, 3, 16);
 
     // Update SNR Label
     const snr = Math.max(0, Math.round(maxInBand - noiseFloor));
     snrLabel.textContent = `In-Band Peak: ${Math.round(maxInBand)} dB | SNR: ~${snr} dB`;
 
-    // Overlay text
+    // Overlay text with glass styling
     canvasOverlay.textContent = `Band: ${profile.minFreq}-${profile.maxFreq}Hz | Status: ${state}`;
   }
 });
