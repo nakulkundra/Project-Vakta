@@ -7,29 +7,48 @@
   <style>
     :root {
       /* Dark Mode Palette (Only) */
-      --bg-dark-base: #03060d;
-      --bg-glass-card: rgba(14, 20, 36, 0.52);
-      --bg-glass-card-hover: rgba(20, 28, 50, 0.62);
-      --bg-glass-input: rgba(6, 10, 22, 0.68);
-      --glass-border: rgba(255, 255, 255, 0.12);
-      --glass-border-highlight: rgba(255, 255, 255, 0.28);
-      --glass-specular: inset 0 1px 1px 0 rgba(255, 255, 255, 0.25), inset 0 -1px 2px 0 rgba(0, 0, 0, 0.45);
-      --glass-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.75), 0 0 30px rgba(0, 0, 0, 0.3);
+      --bg-dark-base: #040711;
+      --bg-glass-surface: rgba(11, 18, 34, 0.65);
+      --bg-glass-input: rgba(6, 11, 22, 0.75);
+      --bg-glass-pill: rgba(255, 255, 255, 0.04);
 
-      /* VIBGYOR Tokens (Violet, Indigo, Blue, Green, Yellow, Orange, Red) */
-      --v-violet: #8b00ff;
-      --v-indigo: #4b0082;
-      --v-blue: #0070f3;
-      --v-green: #00e676;
-      --v-yellow: #ffea00;
-      --v-orange: #ff7700;
-      --v-red: #ff0055;
+      /* VIBGYOR Border Gradients (Subtle & Refined) */
+      --vibgyor-border: linear-gradient(135deg, 
+        rgba(139, 0, 255, 0.45) 0%, 
+        rgba(75, 0, 130, 0.40) 16.6%, 
+        rgba(0, 112, 243, 0.45) 33.3%, 
+        rgba(0, 230, 118, 0.45) 50%, 
+        rgba(255, 234, 0, 0.42) 66.6%, 
+        rgba(255, 119, 0, 0.42) 83.3%, 
+        rgba(255, 0, 85, 0.45) 100%
+      );
 
-      --vibgyor-gradient: linear-gradient(135deg, #8b00ff 0%, #4b0082 16.6%, #0070f3 33.3%, #00e676 50%, #ffea00 66.6%, #ff7700 83.3%, #ff0055 100%);
-      --vibgyor-h: linear-gradient(90deg, #8b00ff 0%, #4b0082 16.6%, #0070f3 33.3%, #00e676 50%, #ffea00 66.6%, #ff7700 83.3%, #ff0055 100%);
-      --vibgyor-glow: 0 0 25px rgba(0, 230, 118, 0.3), 0 0 45px rgba(139, 0, 255, 0.25);
+      --vibgyor-border-hover: linear-gradient(135deg, 
+        rgba(139, 0, 255, 0.8) 0%, 
+        rgba(75, 0, 130, 0.75) 16.6%, 
+        rgba(0, 112, 243, 0.8) 33.3%, 
+        rgba(0, 230, 118, 0.8) 50%, 
+        rgba(255, 234, 0, 0.75) 66.6%, 
+        rgba(255, 119, 0, 0.75) 83.3%, 
+        rgba(255, 0, 85, 0.8) 100%
+      );
 
-      --text-main: #f4f8ff;
+      --vibgyor-border-h: linear-gradient(90deg, 
+        rgba(139, 0, 255, 0.5) 0%, 
+        rgba(75, 0, 130, 0.45) 16.6%, 
+        rgba(0, 112, 243, 0.5) 33.3%, 
+        rgba(0, 230, 118, 0.5) 50%, 
+        rgba(255, 234, 0, 0.45) 66.6%, 
+        rgba(255, 119, 0, 0.45) 83.3%, 
+        rgba(255, 0, 85, 0.5) 100%
+      );
+
+      /* Liquid Glass Lighting & Specular Effects */
+      --glass-specular: inset 0 1px 1px 0 rgba(255, 255, 255, 0.16), inset 0 -1px 2px 0 rgba(0, 0, 0, 0.5);
+      --glass-shadow: 0 18px 45px -10px rgba(0, 0, 0, 0.8), 0 0 16px rgba(0, 112, 243, 0.06);
+      --glass-shadow-hover: 0 22px 55px -10px rgba(0, 0, 0, 0.85), 0 0 24px rgba(0, 112, 243, 0.12);
+
+      --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
       --radius: 16px;
@@ -53,7 +72,7 @@
       overflow-x: hidden;
     }
 
-    /* Ambient Liquid Glowing Orbs in Background */
+    /* Ambient Subtle Atmospheric Orbs (Soft, not flashy) */
     .liquid-background {
       position: fixed;
       top: 0;
@@ -68,56 +87,56 @@
     .orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(95px);
-      opacity: 0.38;
+      filter: blur(120px);
+      opacity: 0.15;
       mix-blend-mode: screen;
       will-change: transform;
     }
 
     .orb-1 {
-      width: 500px;
-      height: 500px;
+      width: 550px;
+      height: 550px;
       background: radial-gradient(circle, #8b00ff 0%, #4b0082 70%, transparent 100%);
-      top: -100px;
-      left: -80px;
-      animation: floatOrb1 22s infinite alternate ease-in-out;
+      top: -120px;
+      left: -100px;
+      animation: floatOrb1 26s infinite alternate ease-in-out;
     }
 
     .orb-2 {
-      width: 480px;
-      height: 480px;
+      width: 520px;
+      height: 520px;
       background: radial-gradient(circle, #0070f3 0%, #00e676 70%, transparent 100%);
-      bottom: -100px;
-      right: -60px;
-      animation: floatOrb2 25s infinite alternate ease-in-out;
+      bottom: -120px;
+      right: -80px;
+      animation: floatOrb2 28s infinite alternate ease-in-out;
     }
 
     .orb-3 {
-      width: 440px;
-      height: 440px;
+      width: 480px;
+      height: 480px;
       background: radial-gradient(circle, #ffea00 0%, #ff7700 45%, #ff0055 80%, transparent 100%);
-      top: 35%;
-      left: 30%;
-      opacity: 0.22;
-      animation: floatOrb3 28s infinite alternate ease-in-out;
+      top: 30%;
+      left: 35%;
+      opacity: 0.10;
+      animation: floatOrb3 32s infinite alternate ease-in-out;
     }
 
     @keyframes floatOrb1 {
       0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(120px, 90px) scale(1.15); }
+      100% { transform: translate(90px, 70px) scale(1.1); }
     }
 
     @keyframes floatOrb2 {
       0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(-100px, -80px) scale(1.18); }
+      100% { transform: translate(-80px, -60px) scale(1.12); }
     }
 
     @keyframes floatOrb3 {
-      0% { transform: translate(0, 0) scale(0.9); }
-      100% { transform: translate(-80px, 70px) scale(1.12); }
+      0% { transform: translate(0, 0) scale(0.95); }
+      100% { transform: translate(-60px, 50px) scale(1.08); }
     }
 
-    /* Subtle Liquid Caustics Grid Overlay */
+    /* Subtle Glass Caustic Grid */
     .glass-caustics {
       position: fixed;
       top: 0;
@@ -125,25 +144,24 @@
       width: 100vw;
       height: 100vh;
       background-image: 
-        radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-        radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-      background-size: 40px 40px, 20px 20px;
-      background-position: 0 0, 20px 20px;
+        radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 32px 32px;
       pointer-events: none;
       z-index: 1;
-      opacity: 0.6;
+      opacity: 0.5;
     }
 
-    /* Header - Liquid Glass */
+    /* Header - Liquid Glass with Subtle VIBGYOR Bottom Border */
     header {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(8, 13, 26, 0.68);
-      backdrop-filter: blur(24px) saturate(200%);
-      -webkit-backdrop-filter: blur(24px) saturate(200%);
-      border-bottom: 1px solid var(--glass-border);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+      background: rgba(8, 14, 28, 0.72);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-bottom: 1px solid transparent;
+      background-clip: padding-box;
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
       padding: 16px 28px;
       display: flex;
       align-items: center;
@@ -158,10 +176,9 @@
       bottom: 0;
       left: 0;
       right: 0;
-      height: 2px;
-      background: var(--vibgyor-h);
-      opacity: 0.85;
-      box-shadow: 0 0 12px rgba(0, 230, 118, 0.4);
+      height: 1px;
+      background: var(--vibgyor-border-h);
+      box-shadow: 0 0 10px rgba(0, 112, 243, 0.2);
     }
 
     .brand {
@@ -171,51 +188,31 @@
     }
 
     .brand-logo {
-      width: 40px;
-      height: 40px;
-      background: var(--vibgyor-gradient);
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(rgba(14, 22, 42, 0.8), rgba(10, 16, 32, 0.9)) padding-box,
+                  var(--vibgyor-border) border-box;
+      border: 1px solid transparent;
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 20px rgba(0, 112, 243, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.4);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .brand-logo::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 50%;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, transparent 100%);
-      border-radius: 10px 10px 0 0;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4), var(--glass-specular);
     }
 
     .brand-logo svg {
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
       fill: #ffffff;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-      z-index: 1;
+      opacity: 0.9;
     }
 
     .brand-title {
-      font-size: 1.35rem;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      background: var(--vibgyor-h);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: vibgyorFlow 8s linear infinite;
-    }
-
-    @keyframes vibgyorFlow {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 200% 50%; }
+      font-size: 1.28rem;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      color: #ffffff;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     }
 
     .brand-subtitle {
@@ -226,39 +223,41 @@
       font-weight: 600;
     }
 
+    /* View Switcher Pill - Liquid Glass with Subtle VIBGYOR Border */
     .view-selector {
       display: flex;
-      background: rgba(6, 10, 22, 0.7);
+      background: linear-gradient(rgba(8, 14, 28, 0.75), rgba(6, 11, 24, 0.85)) padding-box,
+                  var(--vibgyor-border) border-box;
+      border: 1px solid transparent;
       backdrop-filter: blur(16px);
-      padding: 4px;
+      padding: 3px;
       border-radius: 10px;
-      border: 1px solid var(--glass-border);
-      gap: 4px;
+      gap: 3px;
       box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
     }
 
     .view-btn {
       background: transparent;
-      border: none;
+      border: 1px solid transparent;
       color: var(--text-muted);
-      padding: 7px 16px;
-      border-radius: 8px;
-      font-size: 0.85rem;
+      padding: 6px 14px;
+      border-radius: 7px;
+      font-size: 0.84rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
+      transition: all 0.25s ease;
     }
 
     .view-btn:hover {
       color: var(--text-main);
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.04);
     }
 
     .view-btn.active {
-      color: #fff;
-      background: var(--vibgyor-gradient);
-      box-shadow: 0 4px 14px rgba(0, 112, 243, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
     }
 
     /* Main Container */
@@ -275,12 +274,13 @@
       gap: 24px;
     }
 
-    /* Info Bar - Liquid Glass with VIBGYOR Accent */
+    /* Info Bar - Liquid Glass with Subtle VIBGYOR Border */
     .info-bar {
-      background: rgba(14, 20, 38, 0.6);
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      border: 1px solid var(--glass-border);
+      background: linear-gradient(var(--bg-glass-surface), var(--bg-glass-surface)) padding-box,
+                  var(--vibgyor-border) border-box;
+      border: 1px solid transparent;
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
       border-radius: var(--radius);
       padding: 16px 22px;
       display: flex;
@@ -290,24 +290,10 @@
       gap: 12px;
       font-size: 0.88rem;
       box-shadow: var(--glass-shadow), var(--glass-specular);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .info-bar::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 100%;
-      background: var(--vibgyor-gradient);
     }
 
     .info-bar strong {
-      background: var(--vibgyor-h);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #ffffff;
       font-weight: 700;
     }
 
@@ -323,39 +309,28 @@
       }
     }
 
-    /* Liquid Glass Cards */
+    /* Cards - Liquid Glass with Subtle Glowing VIBGYOR Borders */
     .card {
-      background: var(--bg-glass-card);
-      backdrop-filter: blur(28px) saturate(190%);
-      -webkit-backdrop-filter: blur(28px) saturate(190%);
-      border: 1px solid var(--glass-border);
+      background: linear-gradient(var(--bg-glass-surface), var(--bg-glass-surface)) padding-box,
+                  var(--vibgyor-border) border-box;
+      border: 1px solid transparent;
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
       border-radius: var(--radius);
       padding: 26px;
       display: flex;
       flex-direction: column;
       gap: 20px;
       position: relative;
-      overflow: hidden;
       box-shadow: var(--glass-shadow), var(--glass-specular);
-      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
     }
 
     .card:hover {
-      border-color: var(--glass-border-highlight);
-      box-shadow: 0 24px 60px -10px rgba(0, 0, 0, 0.85), 0 0 25px rgba(255, 255, 255, 0.06), var(--glass-specular);
-    }
-
-    /* Top Liquid VIBGYOR Reflection Bar */
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--vibgyor-h);
-      opacity: 0.85;
-      box-shadow: 0 0 16px rgba(0, 230, 118, 0.5);
+      background: linear-gradient(rgba(14, 22, 42, 0.7), rgba(12, 18, 36, 0.7)) padding-box,
+                  var(--vibgyor-border-hover) border-box;
+      box-shadow: var(--glass-shadow-hover), var(--glass-specular);
+      transform: translateY(-2px);
     }
 
     .card-header {
@@ -365,14 +340,15 @@
     }
 
     .card-title {
-      font-size: 1.18rem;
+      font-size: 1.15rem;
       font-weight: 700;
+      color: #ffffff;
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    /* Liquid Badges */
+    /* Badges - Subtle Frosted Pills */
     .badge {
       display: inline-flex;
       align-items: center;
@@ -382,65 +358,58 @@
       text-transform: uppercase;
       letter-spacing: 0.8px;
       padding: 5px 12px;
-      border-radius: 24px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(10, 16, 32, 0.8)) padding-box,
+                  var(--vibgyor-border) border-box;
+      border: 1px solid transparent;
       backdrop-filter: blur(12px);
       color: var(--text-muted);
-      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.12);
     }
 
     .badge-dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background: var(--text-muted);
     }
 
     .badge.listening {
-      border-color: rgba(0, 112, 243, 0.4);
       color: #93c5fd;
-      background: rgba(0, 112, 243, 0.1);
     }
 
     .badge.listening .badge-dot {
-      background: var(--v-blue);
-      box-shadow: 0 0 10px var(--v-blue);
+      background: #0070f3;
+      box-shadow: 0 0 8px #0070f3;
       animation: pulse 1.5s infinite;
     }
 
     .badge.receiving {
-      border-color: rgba(255, 234, 0, 0.4);
       color: #fef08a;
-      background: rgba(255, 234, 0, 0.1);
     }
 
     .badge.receiving .badge-dot {
-      background: var(--v-yellow);
-      box-shadow: 0 0 10px var(--v-yellow);
+      background: #ffea00;
+      box-shadow: 0 0 8px #ffea00;
       animation: pulse 0.6s infinite;
     }
 
     .badge.success {
-      border-color: rgba(0, 230, 118, 0.4);
       color: #a7f3d0;
-      background: rgba(0, 230, 118, 0.1);
     }
 
     .badge.success .badge-dot {
-      background: var(--v-green);
-      box-shadow: 0 0 10px var(--v-green);
+      background: #00e676;
+      box-shadow: 0 0 8px #00e676;
     }
 
     .badge.error {
-      border-color: rgba(255, 0, 85, 0.4);
       color: #fecdd3;
-      background: rgba(255, 0, 85, 0.1);
     }
 
     .badge.error .badge-dot {
-      background: var(--v-red);
-      box-shadow: 0 0 10px var(--v-red);
+      background: #ff0055;
+      box-shadow: 0 0 8px #ff0055;
     }
 
     @keyframes pulse {
@@ -468,14 +437,14 @@
       color: #64748b;
     }
 
-    /* Liquid Glass Inputs & Selects */
+    /* Liquid Glass Inputs with Subtle Borders */
     input[type="text"],
     textarea,
     select {
       background: var(--bg-glass-input);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--glass-border);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 10px;
       color: var(--text-main);
       padding: 12px 16px;
@@ -489,12 +458,14 @@
     input[type="text"]:focus,
     textarea:focus,
     select:focus {
-      border-color: rgba(255, 255, 255, 0.35);
-      box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.35), inset 0 2px 4px rgba(0, 0, 0, 0.4);
+      border: 1px solid transparent;
+      background: linear-gradient(rgba(8, 14, 28, 0.9), rgba(8, 14, 28, 0.9)) padding-box,
+                  var(--vibgyor-border-hover) border-box;
+      box-shadow: 0 0 14px rgba(0, 112, 243, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.4);
     }
 
     select option {
-      background: #0d1424;
+      background: #0b1122;
       color: #fff;
     }
 
@@ -503,7 +474,7 @@
       min-height: 85px;
     }
 
-    /* Liquid Preset Chips */
+    /* Preset Chips - Glass with Fine Subtle VIBGYOR Border */
     .presets {
       display: flex;
       flex-wrap: wrap;
@@ -511,27 +482,26 @@
     }
 
     .preset-chip {
-      background: rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--glass-border);
+      background: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)) padding-box,
+                  rgba(255, 255, 255, 0.1) border-box;
+      border: 1px solid transparent;
       border-radius: 8px;
       font-size: 0.78rem;
-      padding: 5px 10px;
+      padding: 5px 11px;
       color: var(--text-muted);
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      transition: all 0.2s ease;
     }
 
     .preset-chip:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      border-color: var(--glass-border-highlight);
-      box-shadow: 0 2px 10px rgba(0, 112, 243, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      background: linear-gradient(rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.06)) padding-box,
+                  var(--vibgyor-border) border-box;
+      color: #ffffff;
+      box-shadow: 0 2px 10px rgba(0, 112, 243, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.15);
       transform: translateY(-1px);
     }
 
-    /* Sliders with VIBGYOR Track */
+    /* Sliders - Clean Refined Track */
     .controls-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -540,46 +510,44 @@
 
     input[type="range"] {
       width: 100%;
-      height: 6px;
+      height: 4px;
       border-radius: 4px;
-      background: var(--vibgyor-h);
+      background: rgba(255, 255, 255, 0.12);
       outline: none;
       -webkit-appearance: none;
-      box-shadow: 0 0 8px rgba(0, 230, 118, 0.3);
     }
 
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
       background: #ffffff;
-      border: 2px solid #0070f3;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 10px #00e676;
+      border: 1px solid rgba(0, 112, 243, 0.6);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6), 0 0 8px rgba(0, 112, 243, 0.4);
       cursor: pointer;
       transition: transform 0.15s ease;
     }
 
     input[type="range"]::-webkit-slider-thumb:hover {
-      transform: scale(1.2);
+      transform: scale(1.15);
     }
 
-    /* Liquid Glass Buttons with Specular Shine */
+    /* Liquid Glass Buttons - Translucent Body with Subtle VIBGYOR Borders */
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
-      padding: 13px 22px;
+      padding: 12px 22px;
       border-radius: 12px;
-      font-size: 0.96rem;
-      font-weight: 700;
+      font-size: 0.95rem;
+      font-weight: 600;
       cursor: pointer;
-      border: 1px solid var(--glass-border-highlight);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid transparent;
+      transition: all 0.25s ease;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), var(--glass-specular);
     }
 
     .btn::before {
@@ -588,42 +556,49 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 50%;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, transparent 100%);
+      height: 40%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, transparent 100%);
       pointer-events: none;
     }
 
     .btn-primary {
-      background: var(--vibgyor-gradient);
+      background: linear-gradient(rgba(18, 28, 52, 0.78), rgba(12, 18, 36, 0.88)) padding-box,
+                  var(--vibgyor-border) border-box;
       color: #ffffff;
-      box-shadow: 0 6px 24px rgba(0, 112, 243, 0.4), var(--glass-specular);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 14px rgba(0, 112, 243, 0.15), var(--glass-specular);
     }
 
     .btn-primary:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 32px rgba(139, 0, 255, 0.45), 0 0 20px rgba(0, 230, 118, 0.4), var(--glass-specular);
+      background: linear-gradient(rgba(24, 36, 68, 0.85), rgba(16, 24, 46, 0.92)) padding-box,
+                  var(--vibgyor-border-hover) border-box;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 112, 243, 0.25), var(--glass-specular);
+      transform: translateY(-1px);
     }
 
     .btn-success {
-      background: linear-gradient(135deg, rgba(0, 230, 118, 0.85) 0%, rgba(0, 112, 243, 0.85) 100%);
-      color: #03150d;
-      box-shadow: 0 6px 24px rgba(0, 230, 118, 0.35), var(--glass-specular);
+      background: linear-gradient(rgba(12, 34, 28, 0.78), rgba(8, 24, 20, 0.88)) padding-box,
+                  var(--vibgyor-border) border-box;
+      color: #ffffff;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 14px rgba(0, 230, 118, 0.15), var(--glass-specular);
     }
 
     .btn-success:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(0, 230, 118, 0.5), var(--glass-specular);
+      background: linear-gradient(rgba(16, 44, 36, 0.85), rgba(12, 32, 26, 0.92)) padding-box,
+                  var(--vibgyor-border-hover) border-box;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 230, 118, 0.25), var(--glass-specular);
+      transform: translateY(-1px);
     }
 
     .btn-danger {
-      background: linear-gradient(135deg, #ff0055 0%, #ff7700 100%);
+      background: linear-gradient(rgba(42, 14, 24, 0.78), rgba(28, 8, 16, 0.88)) padding-box,
+                  linear-gradient(135deg, rgba(255, 0, 85, 0.6), rgba(255, 119, 0, 0.6)) border-box;
       color: #ffffff;
-      box-shadow: 0 6px 24px rgba(255, 0, 85, 0.4), var(--glass-specular);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 14px rgba(255, 0, 85, 0.15), var(--glass-specular);
     }
 
     .btn-danger:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(255, 0, 85, 0.55), var(--glass-specular);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 0, 85, 0.25), var(--glass-specular);
     }
 
     .btn:disabled {
@@ -634,28 +609,29 @@
 
     /* Progress bar */
     .progress-bar-wrap {
-      height: 8px;
-      background: rgba(6, 10, 22, 0.8);
-      border-radius: 6px;
+      height: 6px;
+      background: rgba(6, 11, 24, 0.8);
+      border-radius: 4px;
       overflow: hidden;
       display: none;
-      border: 1px solid var(--glass-border);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .progress-bar-fill {
       height: 100%;
       width: 0%;
-      background: var(--vibgyor-h);
-      box-shadow: 0 0 12px rgba(0, 230, 118, 0.5);
+      background: var(--vibgyor-border-h);
+      box-shadow: 0 0 8px rgba(0, 112, 243, 0.4);
       transition: width 0.05s linear;
     }
 
-    /* Spectrum Canvas Container */
+    /* Spectrum Canvas Container - Liquid Glass with Subtle VIBGYOR Border */
     .canvas-container {
       position: relative;
-      background: rgba(6, 10, 22, 0.85);
+      background: linear-gradient(rgba(6, 11, 22, 0.9), rgba(6, 11, 22, 0.9)) padding-box,
+                  var(--vibgyor-border) border-box;
+      border: 1px solid transparent;
       backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
       border-radius: 12px;
       overflow: hidden;
       height: 165px;
@@ -674,46 +650,35 @@
       left: 10px;
       font-family: var(--font-mono);
       font-size: 0.72rem;
-      color: #a5f3fc;
-      background: rgba(4, 8, 18, 0.8);
+      color: #94a3b8;
+      background: rgba(4, 8, 16, 0.85);
       backdrop-filter: blur(8px);
-      padding: 4px 10px;
-      border-radius: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 3px 9px;
+      border-radius: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       pointer-events: none;
     }
 
-    /* Received Message Box - Liquid Frosted Card */
+    /* Received Message Box - Liquid Glass with Subtle Border */
     .message-output {
-      background: var(--bg-glass-input);
+      background: linear-gradient(rgba(6, 11, 22, 0.75), rgba(6, 11, 22, 0.75)) padding-box,
+                  rgba(255, 255, 255, 0.1) border-box;
+      border: 1px solid transparent;
       backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
       border-radius: 12px;
       padding: 18px;
       min-height: 105px;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.3s ease;
       box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4), var(--glass-specular);
-      position: relative;
-      overflow: hidden;
     }
 
     .message-output.has-message {
-      border-color: rgba(0, 230, 118, 0.5);
-      background: rgba(0, 230, 118, 0.06);
-      box-shadow: 0 0 25px rgba(0, 230, 118, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-    }
-
-    .message-output.has-message::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: var(--vibgyor-h);
+      background: linear-gradient(rgba(6, 16, 24, 0.85), rgba(6, 16, 24, 0.85)) padding-box,
+                  var(--vibgyor-border) border-box;
+      box-shadow: 0 0 20px rgba(0, 230, 118, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.15);
     }
 
     .message-text {
@@ -729,7 +694,7 @@
       color: var(--text-muted);
       display: flex;
       justify-content: space-between;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
       padding-top: 10px;
     }
 
@@ -747,9 +712,8 @@
     }
 
     .history-item {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 8px;
       padding: 8px 14px;
       display: flex;
@@ -760,8 +724,8 @@
     }
 
     .history-item:hover {
-      background: rgba(255, 255, 255, 0.06);
-      border-color: var(--glass-border-highlight);
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.15);
     }
 
     .history-item .text {
@@ -781,15 +745,15 @@
       padding: 24px;
       font-size: 0.82rem;
       color: var(--text-muted);
-      border-top: 1px solid var(--glass-border);
-      background: rgba(8, 13, 26, 0.5);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(8, 14, 28, 0.5);
       backdrop-filter: blur(20px);
     }
   </style>
 </head>
 <body>
 
-  <!-- Background Liquid Glow Orbs (VIBGYOR Aurora) -->
+  <!-- Ambient Subtle Atmospheric Orbs -->
   <div class="liquid-background">
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
@@ -824,10 +788,10 @@
 
     <div class="info-bar">
       <div>
-        <strong>Acoustic Data-over-Sound:</strong> Transmitting 16-FSK packets over airborne acoustic waves. Zero RF, pairing, or internet needed.
+        <strong>Acoustic Data-over-Sound:</strong> 16-FSK packets transmitted over airborne acoustic sound waves. Zero RF or pairing required.
       </div>
       <div id="audioStatusBadge" class="badge">
-        <span class="badge-dot"></span> Web Audio Active
+        <span class="badge-dot"></span> Web Audio Ready
       </div>
     </div>
 
@@ -980,7 +944,7 @@
   </main>
 
   <footer>
-    Project Vakta • Liquid Glass & VIBGYOR Theme • Web Audio API Acoustic Transceiver
+    Project Vakta • Liquid Glass & Subtle VIBGYOR Accents • Web Audio API Acoustic Transceiver
   </footer>
 
   <!-- Core Scripts -->

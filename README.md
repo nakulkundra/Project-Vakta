@@ -20,23 +20,23 @@
 
 ---
 
-## 🌈 The VIBGYOR Liquid Glass Experience
+## 🌈 The Subtle Liquid Glass & VIBGYOR Design
 
-Project Vakta features a bespoke **Liquid Glass & VIBGYOR** dark-mode design language inspired by scientific acoustic spectrum analyzers and optical caustics:
+Project Vakta features an understated, dark-mode **Liquid Glass** architecture framed by delicate, luminous **VIBGYOR borders**:
 
-* 🪞 **Frosted Liquid Glass:** High-diffusion translucent glassmorphism surfaces (`backdrop-filter: blur(28px) saturate(190%)`) with specular top reflections and inner bevel refractions.
-* 🌌 **Pure Dark Mode Void:** Deep obsidian background (`#03060d`) overlaid with smooth floating aurora orbs that cast ambient chromatic caustic glows through the frosted glass.
-* 🌈 **VIBGYOR Chromatic Spectrum:** Every frequency tier, UI badge, audio slider, and live FFT spectrum visualizer is mapped across the visible light spectrum:
+* 🪞 **Frosted Liquid Glass Surfaces:** Translucent dark obsidian glass (`backdrop-filter: blur(28px) saturate(180%)`) with delicate inner specular light and beveled refractions.
+* 🌈 **Subtle VIBGYOR Glow Borders:** Clean, non-distracting 1px gradient borders spanning the 7 spectral hues (**V**iolet, **I**ndigo, **B**lue, **G**reen, **Y**ellow, **O**range, **R**ed), providing a soft ambient luminescence without loud or flashy fills.
+* 🌌 **Pure Dark Mode Void:** Deep cosmic black backdrop (`#040711`) with subtle, ambient atmospheric glow that highlights the glassware boundaries.
 
-| Color | Spectrum | Hex Code | System Role |
+| Color | Spectrum | Hex Code | Border & Diagnostic Role |
 | :---: | :---: | :---: | :--- |
-| 🟣 | **V** - Violet | `#8B00FF` | Low-frequency base, Brand Identity & Ambient Aurora |
-| 🔮 | **I** - Indigo | `#4B0082` | Secondary pilot tones & Deep glass refractions |
-| 🔷 | **B** - Blue | `#0070F3` | Listening state, Active selection & Primary actions |
-| 🟢 | **G** - Green | `#00E676` | CRC-8 Verified packets, Success indicators & Receiver Ready |
-| 🟡 | **Y** - Yellow | `#FFEA00` | Preamble Tone A detector & Symbol decoding warnings |
-| 🟠 | **O** - Orange | `#FF7700` | Preamble Tone B detector & Dynamic progress meter |
-| 🔴 | **R** - Red | `#FF0055` | High-frequency ceiling & Error threshold demarcation |
+| 🟣 | **V** - Violet | `#8B00FF` | Outer frame boundary & low-frequency anchor |
+| 🔮 | **I** - Indigo | `#4B0082` | Subtle glass edge refraction |
+| 🔷 | **B** - Blue | `#0070F3` | Active listening & state focus illumination |
+| 🟢 | **G** - Green | `#00E676` | CRC-8 Verified packet glow & Ready indicators |
+| 🟡 | **Y** - Yellow | `#FFEA00` | Preamble Tone A frequency marker |
+| 🟠 | **O** - Orange | `#FF7700` | Preamble Tone B frequency marker |
+| 🔴 | **R** - Red | `#FF0055` | High-frequency spectrum ceiling |
 
 ---
 
