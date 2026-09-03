@@ -313,13 +313,13 @@ document.addEventListener('DOMContentLoaded', () => {
     canvasCtx.fillRect(0, 0, spectrumCanvas.width, spectrumCanvas.height);
   }
 
-  // --- Live Spectrum & Band Highlight Visualizer (Liquid Glass Spectrum) ---
+  // --- Live Spectrum & Band Highlight Visualizer (Continuous 4096-FFT) ---
   function renderSpectrum(audioInfo) {
     const { frequencyData, noiseFloor, analyser, sampleRate, profile, state } = audioInfo;
     const width = spectrumCanvas.width;
     const height = spectrumCanvas.height;
 
-    // Dark liquid glass base
+    // Dark canvas background buffer
     canvasCtx.fillStyle = 'rgba(5, 9, 20, 0.95)';
     canvasCtx.fillRect(0, 0, width, height);
 

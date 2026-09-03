@@ -1,5 +1,5 @@
 <resources>
-    <!-- Dark Mode NoActionBar Theme for Liquid Glass Experience -->
+    <!-- Dark Mode NoActionBar Theme for Fullscreen Transceiver -->
     <style name="Theme.ProjectVakta" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowBackground">#040711</item>
         <item name="android:statusBarColor">#040711</item>

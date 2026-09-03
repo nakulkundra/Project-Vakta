@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         // Keep screen awake while receiving acoustic packets
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-        // Dark Mode status bar and navigation bar matching Liquid Glass void (#040711)
+        // Dark Mode status bar and navigation bar (#040711)
         window.statusBarColor = Color.parseColor("#040711")
         window.navigationBarColor = Color.parseColor("#040711")
 
