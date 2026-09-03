@@ -313,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
     canvasCtx.fillRect(0, 0, spectrumCanvas.width, spectrumCanvas.height);
   }
 
-  // --- Live Spectrum & Band Highlight Visualizer (Subtle Liquid Glass & VIBGYOR) ---
+  // --- Live Spectrum & Band Highlight Visualizer (Liquid Glass Spectrum) ---
   function renderSpectrum(audioInfo) {
     const { frequencyData, noiseFloor, analyser, sampleRate, profile, state } = audioInfo;
     const width = spectrumCanvas.width;
@@ -351,21 +351,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     canvasCtx.fillRect(minBandX, 0, Math.max(12, maxBandX - minBandX), height);
 
-    // Draw band border markers with subtle VIBGYOR glow
+    // Draw band border markers with subtle glow
     canvasCtx.strokeStyle = state === 'RECEIVING' ? 'rgba(0, 230, 118, 0.4)' : 'rgba(0, 112, 243, 0.25)';
     canvasCtx.setLineDash([3, 3]);
     canvasCtx.strokeRect(minBandX, 0, Math.max(12, maxBandX - minBandX), height);
     canvasCtx.setLineDash([]);
 
-    // Delicate VIBGYOR Chromatic Gradient (Violet -> Indigo -> Blue -> Green -> Yellow -> Orange -> Red)
-    const vibgyorGrad = canvasCtx.createLinearGradient(0, 0, width, 0);
-    vibgyorGrad.addColorStop(0.00, 'rgba(139, 0, 255, 0.85)'); // Violet
-    vibgyorGrad.addColorStop(0.16, 'rgba(75, 0, 130, 0.80)');  // Indigo
-    vibgyorGrad.addColorStop(0.33, 'rgba(0, 112, 243, 0.85)'); // Blue
-    vibgyorGrad.addColorStop(0.50, 'rgba(0, 230, 118, 0.85)'); // Green
-    vibgyorGrad.addColorStop(0.66, 'rgba(255, 234, 0, 0.80)'); // Yellow
-    vibgyorGrad.addColorStop(0.83, 'rgba(255, 119, 0, 0.80)'); // Orange
-    vibgyorGrad.addColorStop(1.00, 'rgba(255, 0, 85, 0.85)');  // Red
+    // Delicate Chromatic Spectrum Gradient
+    const spectrumGrad = canvasCtx.createLinearGradient(0, 0, width, 0);
+    spectrumGrad.addColorStop(0.00, 'rgba(139, 0, 255, 0.85)');
+    spectrumGrad.addColorStop(0.16, 'rgba(75, 0, 130, 0.80)');
+    spectrumGrad.addColorStop(0.33, 'rgba(0, 112, 243, 0.85)');
+    spectrumGrad.addColorStop(0.50, 'rgba(0, 230, 118, 0.85)');
+    spectrumGrad.addColorStop(0.66, 'rgba(255, 234, 0, 0.80)');
+    spectrumGrad.addColorStop(0.83, 'rgba(255, 119, 0, 0.80)');
+    spectrumGrad.addColorStop(1.00, 'rgba(255, 0, 85, 0.85)');
 
     // Trace Spectrum Curve Points
     let maxInBand = -150;
@@ -408,12 +408,12 @@ document.addEventListener('DOMContentLoaded', () => {
       canvasCtx.restore();
     }
 
-    // Draw refined 1.5px VIBGYOR curve with gentle glow
+    // Draw refined 1.5px spectral curve with gentle glow
     canvasCtx.save();
     canvasCtx.lineWidth = 1.5;
     canvasCtx.shadowColor = 'rgba(0, 112, 243, 0.25)';
     canvasCtx.shadowBlur = 4;
-    canvasCtx.strokeStyle = vibgyorGrad;
+    canvasCtx.strokeStyle = spectrumGrad;
     canvasCtx.beginPath();
     for (let i = 0; i < points.length; i++) {
       if (i === 0) canvasCtx.moveTo(points[i].x, points[i].y);

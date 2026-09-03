@@ -12,8 +12,8 @@
       --bg-glass-input: rgba(6, 11, 22, 0.75);
       --bg-glass-pill: rgba(255, 255, 255, 0.04);
 
-      /* VIBGYOR Border Gradients (Subtle & Refined) */
-      --vibgyor-border: linear-gradient(135deg, 
+      /* Luminescent Border Gradients (Subtle & Refined) */
+      --glass-border: linear-gradient(135deg, 
         rgba(139, 0, 255, 0.45) 0%, 
         rgba(75, 0, 130, 0.40) 16.6%, 
         rgba(0, 112, 243, 0.45) 33.3%, 
@@ -23,7 +23,7 @@
         rgba(255, 0, 85, 0.45) 100%
       );
 
-      --vibgyor-border-hover: linear-gradient(135deg, 
+      --glass-border-hover: linear-gradient(135deg, 
         rgba(139, 0, 255, 0.8) 0%, 
         rgba(75, 0, 130, 0.75) 16.6%, 
         rgba(0, 112, 243, 0.8) 33.3%, 
@@ -33,7 +33,7 @@
         rgba(255, 0, 85, 0.8) 100%
       );
 
-      --vibgyor-border-h: linear-gradient(90deg, 
+      --glass-border-h: linear-gradient(90deg, 
         rgba(139, 0, 255, 0.5) 0%, 
         rgba(75, 0, 130, 0.45) 16.6%, 
         rgba(0, 112, 243, 0.5) 33.3%, 
@@ -151,7 +151,7 @@
       opacity: 0.5;
     }
 
-    /* Header - Liquid Glass with Subtle VIBGYOR Bottom Border */
+    /* Header - Liquid Glass with Subtle Luminescent Bottom Border */
     header {
       position: sticky;
       top: 0;
@@ -177,7 +177,7 @@
       left: 0;
       right: 0;
       height: 1px;
-      background: var(--vibgyor-border-h);
+      background: var(--glass-border-h);
       box-shadow: 0 0 10px rgba(0, 112, 243, 0.2);
     }
 
@@ -191,7 +191,7 @@
       width: 38px;
       height: 38px;
       background: linear-gradient(rgba(14, 22, 42, 0.8), rgba(10, 16, 32, 0.9)) padding-box,
-                  var(--vibgyor-border) border-box;
+                  var(--glass-border) border-box;
       border: 1px solid transparent;
       border-radius: 10px;
       display: flex;
@@ -223,11 +223,11 @@
       font-weight: 600;
     }
 
-    /* View Switcher Pill - Liquid Glass with Subtle VIBGYOR Border */
+    /* View Switcher Pill - Liquid Glass with Subtle Luminescent Border */
     .view-selector {
       display: flex;
       background: linear-gradient(rgba(8, 14, 28, 0.75), rgba(6, 11, 24, 0.85)) padding-box,
-                  var(--vibgyor-border) border-box;
+                  var(--glass-border) border-box;
       border: 1px solid transparent;
       backdrop-filter: blur(16px);
       padding: 3px;
@@ -274,10 +274,10 @@
       gap: 24px;
     }
 
-    /* Info Bar - Liquid Glass with Subtle VIBGYOR Border */
+    /* Info Bar - Liquid Glass with Subtle Luminescent Border */
     .info-bar {
       background: linear-gradient(var(--bg-glass-surface), var(--bg-glass-surface)) padding-box,
-                  var(--vibgyor-border) border-box;
+                  var(--glass-border) border-box;
       border: 1px solid transparent;
       backdrop-filter: blur(28px) saturate(180%);
       -webkit-backdrop-filter: blur(28px) saturate(180%);
@@ -309,10 +309,10 @@
       }
     }
 
-    /* Cards - Liquid Glass with Subtle Glowing VIBGYOR Borders */
+    /* Cards - Liquid Glass with Subtle Glowing Luminescent Borders */
     .card {
       background: linear-gradient(var(--bg-glass-surface), var(--bg-glass-surface)) padding-box,
-                  var(--vibgyor-border) border-box;
+                  var(--glass-border) border-box;
       border: 1px solid transparent;
       backdrop-filter: blur(28px) saturate(180%);
       -webkit-backdrop-filter: blur(28px) saturate(180%);
@@ -328,7 +328,7 @@
 
     .card:hover {
       background: linear-gradient(rgba(14, 22, 42, 0.7), rgba(12, 18, 36, 0.7)) padding-box,
-                  var(--vibgyor-border-hover) border-box;
+                  var(--glass-border-hover) border-box;
       box-shadow: var(--glass-shadow-hover), var(--glass-specular);
       transform: translateY(-2px);
     }
@@ -360,7 +360,7 @@
       padding: 5px 12px;
       border-radius: 20px;
       background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(10, 16, 32, 0.8)) padding-box,
-                  var(--vibgyor-border) border-box;
+                  var(--glass-border) border-box;
       border: 1px solid transparent;
       backdrop-filter: blur(12px);
       color: var(--text-muted);
@@ -460,7 +460,7 @@
     select:focus {
       border: 1px solid transparent;
       background: linear-gradient(rgba(8, 14, 28, 0.9), rgba(8, 14, 28, 0.9)) padding-box,
-                  var(--vibgyor-border-hover) border-box;
+                  var(--glass-border-hover) border-box;
       box-shadow: 0 0 14px rgba(0, 112, 243, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.4);
     }
 
@@ -474,7 +474,7 @@
       min-height: 85px;
     }
 
-    /* Preset Chips - Glass with Fine Subtle VIBGYOR Border */
+    /* Preset Chips - Glass with Fine Subtle Luminescent Border */
     .presets {
       display: flex;
       flex-wrap: wrap;
@@ -495,7 +495,7 @@
 
     .preset-chip:hover {
       background: linear-gradient(rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.06)) padding-box,
-                  var(--vibgyor-border) border-box;
+                  var(--glass-border) border-box;
       color: #ffffff;
       box-shadow: 0 2px 10px rgba(0, 112, 243, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.15);
       transform: translateY(-1px);
@@ -533,7 +533,7 @@
       transform: scale(1.15);
     }
 
-    /* Liquid Glass Buttons - Translucent Body with Subtle VIBGYOR Borders */
+    /* Liquid Glass Buttons - Translucent Body with Subtle Luminescent Borders */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -563,28 +563,28 @@
 
     .btn-primary {
       background: linear-gradient(rgba(18, 28, 52, 0.78), rgba(12, 18, 36, 0.88)) padding-box,
-                  var(--vibgyor-border) border-box;
+                  var(--glass-border) border-box;
       color: #ffffff;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 14px rgba(0, 112, 243, 0.15), var(--glass-specular);
     }
 
     .btn-primary:hover:not(:disabled) {
       background: linear-gradient(rgba(24, 36, 68, 0.85), rgba(16, 24, 46, 0.92)) padding-box,
-                  var(--vibgyor-border-hover) border-box;
+                  var(--glass-border-hover) border-box;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 112, 243, 0.25), var(--glass-specular);
       transform: translateY(-1px);
     }
 
     .btn-success {
       background: linear-gradient(rgba(12, 34, 28, 0.78), rgba(8, 24, 20, 0.88)) padding-box,
-                  var(--vibgyor-border) border-box;
+                  var(--glass-border) border-box;
       color: #ffffff;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 14px rgba(0, 230, 118, 0.15), var(--glass-specular);
     }
 
     .btn-success:hover:not(:disabled) {
       background: linear-gradient(rgba(16, 44, 36, 0.85), rgba(12, 32, 26, 0.92)) padding-box,
-                  var(--vibgyor-border-hover) border-box;
+                  var(--glass-border-hover) border-box;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 230, 118, 0.25), var(--glass-specular);
       transform: translateY(-1px);
     }
@@ -620,16 +620,16 @@
     .progress-bar-fill {
       height: 100%;
       width: 0%;
-      background: var(--vibgyor-border-h);
+      background: var(--glass-border-h);
       box-shadow: 0 0 8px rgba(0, 112, 243, 0.4);
       transition: width 0.05s linear;
     }
 
-    /* Spectrum Canvas Container - Liquid Glass with Subtle VIBGYOR Border */
+    /* Spectrum Canvas Container - Liquid Glass with Subtle Luminescent Border */
     .canvas-container {
       position: relative;
       background: linear-gradient(rgba(6, 11, 22, 0.9), rgba(6, 11, 22, 0.9)) padding-box,
-                  var(--vibgyor-border) border-box;
+                  var(--glass-border) border-box;
       border: 1px solid transparent;
       backdrop-filter: blur(20px);
       border-radius: 12px;
@@ -677,7 +677,7 @@
 
     .message-output.has-message {
       background: linear-gradient(rgba(6, 16, 24, 0.85), rgba(6, 16, 24, 0.85)) padding-box,
-                  var(--vibgyor-border) border-box;
+                  var(--glass-border) border-box;
       box-shadow: 0 0 20px rgba(0, 230, 118, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.15);
     }
 
@@ -944,7 +944,7 @@
   </main>
 
   <footer>
-    Project Vakta • Liquid Glass & Subtle VIBGYOR Accents • Web Audio API Acoustic Transceiver
+    Project Vakta • Liquid Glass Acoustic Transceiver • Web Audio API
   </footer>
 
   <!-- Core Scripts -->

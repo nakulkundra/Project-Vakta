@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/banner.svg" width="100%" alt="Project Vakta - Liquid Glass & Subtle VIBGYOR Borders" />
+  <img src="assets/banner.svg" width="100%" alt="Project Vakta - Liquid Glass Architecture" />
 </p>
 
 <p align="center">
@@ -10,7 +10,7 @@
     <img src="https://img.shields.io/badge/📦_Repo-Project--Vakta-0070F3?style=for-the-badge&labelColor=080D1A" alt="GitHub Repo" />
   </a>
   <img src="https://img.shields.io/badge/Aesthetic-Liquid_Glass-8B00FF?style=for-the-badge&labelColor=080D1A" alt="Theme" />
-  <img src="https://img.shields.io/badge/Accents-Subtle_VIBGYOR_Borders-FF7700?style=for-the-badge&labelColor=080D1A" alt="Borders" />
+  <img src="https://img.shields.io/badge/DSP-16--FSK_%2B_CRC8-00E676?style=for-the-badge&labelColor=080D1A" alt="DSP" />
 </p>
 
 <p align="center">
@@ -20,26 +20,26 @@
 
 ---
 
-## 🪞 The Liquid Glass & Subtle VIBGYOR Design System
+## 🪞 The Liquid Glass Design System
 
-Project Vakta's user interface is crafted using a dark-mode **Liquid Glass** architecture outlined by delicate, luminous **VIBGYOR borders**:
+Project Vakta's user interface is crafted with a pure dark-mode **Liquid Glass** architecture outlined by delicate, luminous gradient borders:
 
-* 🌌 **Pure Dark Mode Void:** Grounded in a deep cosmic base (`#040711`) with low-opacity (`0.10 - 0.15`), heavily diffused atmospheric orbs (`blur: 120px`) providing gentle studio back-lighting.
+* 🌌 **Pure Dark Mode Void:** Grounded in a deep obsidian base (`#040711`) with low-opacity (`0.10 - 0.15`), heavily diffused atmospheric orbs (`blur: 120px`) providing gentle studio back-lighting.
 * 🪞 **Frosted Glass Substrates:** Cards, inputs, and button surfaces utilize multi-layer frosted translucency (`rgba(11, 18, 34, 0.65)` with `backdrop-filter: blur(28px) saturate(180%)`) with specular top reflections (`inset 0 1px 1px rgba(255, 255, 255, 0.16)`).
-* 🌈 **Subtle VIBGYOR Borders Only:** The full 7-color spectral sequence (**V**iolet, **I**ndigo, **B**lue, **G**reen, **Y**ellow, **O**range, **R**ed) is applied **strictly as crisp 1px borders with a soft ambient luminescence**—completely avoiding loud or oversaturated background fills:
+* ✨ **Subtle Glowing Borders:** Clean 1px multi-stop gradient borders with soft ambient luminescence without loud or oversaturated background fills:
 
 ```css
-/* Pixel-perfect Liquid Glass with Subtle VIBGYOR Border */
+/* Pixel-perfect Liquid Glass with Subtle Glowing Border */
 .card, .btn, .info-bar {
   background: linear-gradient(rgba(11, 18, 34, 0.65), rgba(11, 18, 34, 0.65)) padding-box,
               linear-gradient(135deg, 
-                rgba(139, 0, 255, 0.45) 0%,   /* Violet */
-                rgba(75, 0, 130, 0.40) 16.6%, /* Indigo */
-                rgba(0, 112, 243, 0.45) 33.3%, /* Blue   */
-                rgba(0, 230, 118, 0.45) 50.0%, /* Green  */
-                rgba(255, 234, 0, 0.42) 66.6%, /* Yellow */
-                rgba(255, 119, 0, 0.42) 83.3%, /* Orange */
-                rgba(255, 0, 85, 0.45) 100.0%  /* Red    */
+                rgba(139, 0, 255, 0.45) 0%,   /* Low-frequency anchor */
+                rgba(75, 0, 130, 0.40) 16.6%, 
+                rgba(0, 112, 243, 0.45) 33.3%, 
+                rgba(0, 230, 118, 0.45) 50.0%, 
+                rgba(255, 234, 0, 0.42) 66.6%, 
+                rgba(255, 119, 0, 0.42) 83.3%, 
+                rgba(255, 0, 85, 0.45) 100.0%  /* High-frequency ceiling */
               ) border-box;
   border: 1px solid transparent;
   backdrop-filter: blur(28px) saturate(180%);
@@ -48,22 +48,6 @@ Project Vakta's user interface is crafted using a dark-mode **Liquid Glass** arc
               inset 0 1px 1px rgba(255, 255, 255, 0.16);
 }
 ```
-
----
-
-## 🎨 VIBGYOR Functional Border Mapping
-
-Each of the 7 spectral hues serves a specific functional and diagnostic role:
-
-| Color | Spectrum | Hex Code | System & Border Role |
-| :---: | :---: | :---: | :--- |
-| 🟣 | **V** - Violet | `#8B00FF` | Base frame anchor & Low-frequency detection boundary |
-| 🔮 | **I** - Indigo | `#4B0082` | Subtle glass edge refraction & Secondary pilot tone marker |
-| 🔷 | **B** - Blue | `#0070F3` | Listening state indicator & Active selection focus border |
-| 🟢 | **G** - Green | `#00E676` | CRC-8 Verified packet border glow & Receiver Ready |
-| 🟡 | **Y** - Yellow | `#FFEA00` | Preamble Pilot Tone A marker & Symbol decoding state |
-| 🟠 | **O** - Orange | `#FF7700` | Preamble Pilot Tone B marker & Transmission progress rim |
-| 🔴 | **R** - Red | `#FF0055` | High-frequency spectrum ceiling & Checksum error alert |
 
 ---
 
@@ -170,10 +154,10 @@ python server.py
 ```
 Project-Vakta/
 ├── assets/
-│   └── banner.svg    # Vector banner with Liquid Glass & subtle VIBGYOR borders
+│   └── banner.svg    # Vector banner with Liquid Glass styling
 ├── index.html        # Liquid Glass UI with Split, Tx-Only, and Rx-Only views
 ├── vakta-core.js     # DSP Engine: 16-FSK Modulator/Demodulator & CRC-8
-├── app.js            # UI Controller & Live VIBGYOR FFT Spectrum Visualizer
+├── app.js            # UI Controller & Live FFT Spectrum Visualizer
 ├── server.py         # Lightweight local dev server with auto LAN IP discovery
 ├── run.bat           # 1-Click Windows batch launcher
 ├── .gitignore        # Clean Git repository ignore rules
@@ -191,5 +175,5 @@ Project-Vakta/
 ---
 
 <p align="center">
-  <sub>Project Vakta • Liquid Glass & Subtle VIBGYOR Borders • Created by Nakul Kundra</sub>
+  <sub>Project Vakta • Liquid Glass Architecture • Created by Nakul Kundra</sub>
 </p>
